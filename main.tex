@@ -283,8 +283,8 @@ The use of \emph{nodes}(i) to represent the elements that are been
 displayed, \emph{edges}(ii) to represent the relationship between
 the selected \emph{nodes}, \emph{Layouts}(iii) to define the way the
 \emph{view} distributes the objetcs on itself, and a special value
-system(iv) defined by Pharo symbols used to access to properties of
-the object being modeled.  
+system defined by Pharo symbols used to access to properties of
+the object being modeled (iv).  
 
 The scripting language supports 4 diferent ways of defining \emph{nodes}:
 The instructions \emph{node:} and \emph{nodes:} define standard 
@@ -323,6 +323,22 @@ view edges: (1 to: 4) from: #yourself to: 5 using: (KLLine new width: #yourself)
 \end{lstlisting}
 \fig{}{0.5}{figure5.png}{Basic edges, using metrics}
 
+To apply \emph{Layouts} on the current \emph{nodes} the scripting
+language uses the instruction \emph{applyLayout:}. \emph{Layouts}
+define the methods (or metrics) that will be used to decide how
+to display the elements.
+
+The application of a \emph{Layout} will affect every \emph{node} 
+(\emph{edge}) defined before itself.
+\begin{lstlisting}
+| colors |
+colors := (Color colorNames collect: 
+	 [:each | Color fromString: (each asString)]). "colors as Colors"
+view nodes: colors using: (KLCube new fillColor: #yourself).
+view applyLayout: (KLCubeLayout new).
+\end{lstlisting}
+\fig{}{0.3}{figure6.png}{All Colors avaible in Pharo}
+ 
 %=======
 \subsection{The third dimension} \seclabel{3d}
 
