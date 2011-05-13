@@ -40,6 +40,9 @@
 \usepackage{needspace}
 \usepackage{microtype}
 \usepackage{bold-extra}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage{listings}
 
 % references
 \usepackage[colorlinks]{hyperref}
@@ -141,7 +144,14 @@
 \newcommand{\ins}[1]{\textcolor{blue}{\uline{#1}}} % please insert
 \newcommand{\del}[1]{\textcolor{red}{\sout{#1}}} % please delete
 \newcommand{\chg}[2]{\textcolor{red}{\sout{#1}}{\ra}\textcolor{blue}{\uline{#2}}} % please change
-
+\DeclareGraphicsExtensions{.png,.jpg,.pdf,.eps,.gif}
+\graphicspath{{figures/}}
+\newcommand{\fig}[4]{
+       \begin{figure}[#1]
+               \centering
+               \includegraphics[width=#2\textwidth]{#3}
+               \caption{\label{fig:#3}#4}
+       \end{figure}}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %:Specialized macros
 
@@ -223,6 +233,30 @@
 
 %=======
 \subsection{Klotz in a nutshell} \seclabel{nutshell}
+Klotz is a Framework, based on quite simple 3D graphic elements,
+that are meant to work as metrics to specify characteristics of
+code. The elements to work with are cubes and edges between them.
+
+The main challenge of Klotz is to let the user manage all three 
+dimensions of each cube as metrics and also parametrize the color 
+and the relationship embed on the edges as pleased. The example
+below shows this very main goal: the script creates a group of
+\emph{nodes} that represent some objects (in this case the 
+\emph{classes} of our \emph{model}).The instruction \emph{applyLayout} 
+sets the method the \emph{cubes} will follow to display themselves 
+(in this case on a sphere). And after adding another \emph{cube} at the 
+center (the basic position for any \emph{cube}), by using \emph{edges}, 
+it defines the way every \emph{edge} will be draw (the \emph{edge} 
+depends on the previous definition of the \emph{cubes}).
+
+\begin{lstlisting}
+view nodes: KLEaselCommand  subclasses.
+view applyLayout: (KLSphereLayout new).
+view node: KLEaselCommand using: (KLCube new fillColor: Color random).
+view edges: (KLEaselCommand  subclasses) from: #yourself to: #superclass.   
+\end{lstlisting}
+\fig{}{0.5}{example.png}{KLEaselCommand subclasses.}
+
 
 %=======
 \subsection{Scripting visualizations with Klotz} \seclabel{scripting}
