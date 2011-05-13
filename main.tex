@@ -244,23 +244,22 @@
 
 %=======
 \subsection{Klotz in a nutshell} \seclabel{nutshell}
-Klotz is a \chg{F}{f}ramework, based on \del{quite} simple 3D graphic elements,
+Klotz is a Framework, based on simple 3D graphic elements,
 that are meant to work as metrics to specify characteristics of
 code. The elements to work with are cubes and edges between them.
 
-\ins{The goal of Klotz is to offer a flexible solution to visualize software in 3 dimensions. Klotz offer a scripting language, an API and an easel to ``compose'' a visualization.}
+The goal of Klotz is to offer a flexible solution to visualize software 
+in 3 dimensions. Klotz offer a scripting language, an API and an easel to 
+``compose'' a visualization. 
 
-The main challenge of Klotz is to let the user manage all three 
-dimensions of each cube as metrics and also parametrize the color 
-and the relationship embed on the edges as pleased. The example
-below shows this very main goal: the script creates a group of
-\emph{nodes} that represent some objects (in this case the 
-\emph{classes} of our \emph{model}).The instruction \emph{applyLayout} 
-sets the method the \emph{cubes} will follow to display themselves 
-(in this case on a sphere). And after adding another \emph{cube} at the 
-center (the basic position for any \emph{cube}), by using \emph{edges}, 
-it defines the way every \emph{edge} will be draw (the \emph{edge} 
-depends on the previous definition of the \emph{cubes}).
+The example below shows this very main goal: the script creates a group of
+\emph{nodes} that represent some objects (in this case the \emph{classes} 
+of our \emph{model}).The instruction \emph{applyLayout} sets the method 
+the \emph{cubes} will follow to display themselves (in this case on a 
+sphere). And after adding another \emph{cube} at the center (the basic 
+position for any \emph{cube}), by using \emph{edges}, it defines the way 
+every \emph{edge} will be draw (the \emph{edge} depends on the previous 
+definition of the \emph{cubes}).
 
 \begin{lstlisting}
 | elementsToVisualize |
@@ -272,11 +271,41 @@ view node: KLEaselCommand using: (KLCube new fillColor: Color random).
 view edges: elementsToVisualize from: #yourself to: #superclass.   
 \end{lstlisting}
 
-\fig{}{0.5}{example.png}{KLEaselCommand subclasses.}
+\fig{}{0.5}{figure1.png}{KLEaselCommand subclasses.}
 
 
 %=======
 \subsection{Scripting visualizations with Klotz} \seclabel{scripting}
+The Klotz scripting lenguage is based on Pharo Smalltalk
+(since the application is made on it) and 4 basic principles
+to manage the interaction between the elements on the \emph{view}:
+The use of \emph{nodes}(i) to represent the elements that are been
+displayed, \emph{edges}(ii) to represent the relationship between
+the selected \emph{nodes}, \emph{Layouts}(iii) to define the way the
+\emph{view} distributes the objetcs on itself, and a special value
+system(iv) defined by Pharo symbols used to access to properties of
+the object being modeled.  
+
+The scripting language supports 4 diferent ways of defining \emph{nodes}:
+The instructions \emph{node:} and \emph{nodes:} define standard 
+\emph{nodes}(blue colored, "1" length edged \emph{cubes}), to set 1 or many 
+\emph{nodes} at the same time, respectively.
+\begin{lstlisting}
+	view node: Magnitude.
+	view node: Number.
+	view node: Time    
+\end{lstlisting}
+\fig{}{0.3}{figure2.png}{Magnitude class with 2 of his subclasses.}
+Other way to define them, and customise the \emph{cubes} related to the 
+\emph{nodes}, is by using the instructions \emph{node: using:} and 
+\emph{nodes: using:}, both instructions are meant to directly define 
+the \emph{cube} that will represent the inner \emph{model} of the \emph{node}, 
+or each \emph{node} in the second case.
+\begin{lstlisting}
+view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVariables)    
+\end{lstlisting}
+\fig{}{0.5}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
+
 
 %=======
 \subsection{The third dimension} \seclabel{3d}
