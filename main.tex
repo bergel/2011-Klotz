@@ -306,6 +306,27 @@ view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVar
 \end{lstlisting}
 \fig{}{0.5}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
 
+Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
+4 ways: The instructions \emph{edge: from: to:} and \emph{edges: from: to:} 
+apply, respectively, the \emph{edge} (\emph{edges}) between 2 cubes, each \emph{edge}.
+\begin{lstlisting}
+view nodes: (1 to: 20).
+view applyLayout: (KLCircleLayout new).	
+view node: 21.
+view edges: (1 to: 20) from: #yourself to:  21
+\end{lstlisting}
+\fig{}{0.5}{figure4.png}{Basic edges}
+
+And also as the previuos definition the keyword \emph{using:} is used
+to define the metrics of the \emph{edge} itself.  
+\begin{lstlisting}
+view nodes: (1 to: 20).
+view applyLayout: (KLCircleLayout new).	
+view node: 21.
+view edges: (1 to: 20) 
+	from: #yourself to: 21 using: (KLLine new fillColor: Color red  )
+\end{lstlisting}
+\fig{}{0.5}{figure5.png}{Basic edges, using metrics}
 
 %=======
 \subsection{The third dimension} \seclabel{3d}
