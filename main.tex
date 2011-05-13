@@ -326,10 +326,8 @@ view edges: (1 to: 4) from: #yourself to: 5 using: (KLLine new width: #yourself)
 To apply \emph{Layouts} on the current \emph{nodes} the scripting
 language uses the instruction \emph{applyLayout:}. \emph{Layouts}
 define the methods (or metrics) that will be used to decide how
-to display the elements.
-
-The application of a \emph{Layout} will affect every \emph{node} 
-(\emph{edge}) defined before itself.
+to display the elements.The application of a \emph{Layout} will 
+affect every \emph{node}(\emph{edge}) defined before itself.
 \begin{lstlisting}
 | colors |
 colors := (Color colorNames collect: 
@@ -339,6 +337,13 @@ view applyLayout: (KLCubeLayout new).
 \end{lstlisting}
 \fig{}{0.3}{figure6.png}{All Colors avaible in Pharo}
  
+The special value system mentioned before is a way of sending
+mesages to \emph{nodes} or \emph{edges} that will be evaluated
+before drawing, and will mean something specific at that context:
+keywords like \emph{yourself}, \emph{class}, \emph{subclass}, etc.
+Who are mesages in Pharo, are interpreted by the graphic
+elements (\emph{cubes} and \emph{lines}) to define values
+coresponding to \emph{nodes} (\emph{edges}) information. 
 %=======
 \subsection{The third dimension} \seclabel{3d}
 
