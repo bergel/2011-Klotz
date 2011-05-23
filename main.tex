@@ -335,7 +335,7 @@ colors := (Color colorNames collect:
 view nodes: colors using: (KLCube new fillColor: #yourself).
 view applyLayout: (KLCubeLayout new).
 \end{lstlisting}
-\fig{}{0.3}{figure6.png}{All Colors avaible in Pharo}
+\fig{}{0.3}{figure6.png}{All Colors available in Pharo}
  
 The special value system mentioned before is a way of sending
 mesages to \emph{nodes} or \emph{edges} that will be evaluated
@@ -352,7 +352,7 @@ A visualization contains one unique light.
 A colorless light is at the same position than the camera. 
 Maximum intensity when a face has orthogonal to the camera.
 
-\paragraph{Managing perspective}: 
+\paragraph{Managing perspective}: %:not implemented yet xD
 The perspective can be managed, and parametrized,
 in order to emphasize minor (or major) changes on the same
 \emph{model}. The easel provides commands to increase 
@@ -360,10 +360,21 @@ in order to emphasize minor (or major) changes on the same
 perspective means to enlarge the length of the edges on the
 third dimention. 
 
-\paragraph{Commands in the easel} 
-The easel contains XX commands to rotate 
+\paragraph{Commands in the easel}: 
+In order to manage the position of the viewer the easel 
+contains 6 commands to rotate, it provides rotation on 
+every axis, on both directions.  
 
-\paragraph{Layout}
+\paragraph{Layout}: %:still working on it
+The main objective of having a 3D engine is to have richer 
+\emph{layouts} capable of representing the same \emph{models} 
+that can be generated in 2D, but with the posibility of adding 
+some useful metrics on the third dimention. Or to have 
+completely new ways of analisis, making good use of the 3 
+dimensions available.
+
+description of the layouts so far?
+
 
 \paragraph{Composition}
 
