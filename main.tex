@@ -373,6 +373,7 @@ some useful metrics on the third dimention. Or to have
 completely new ways of analisis, making good use of the 3 
 dimensions available.
 Some examples:
+
 \emph{Cube Layout}: This \emph{layout} display object as a "cube",
 it calculates the nearest perfect cube (8,27,64,etc.), to the
 number of elements, and display the \emph{nodes}, cube root 
@@ -390,6 +391,16 @@ view applyLayout: (KLCubeLayout new).
 \end{lstlisting}
 \fig{}{0.3}{figure7.png}{Cube Layout}
 
+ %:this layout's code highly smells, must be redefined
+\emph{Sphere Layout}: It is a \emph{layout} that makes the display
+as the \emph{nodes} were at the surface of a Sphere,centered on the
+\emph{view} center. 
+\begin{lstlisting}
+	view nodes: Morph  subclasses.
+	view applyLayout: (KLSphereLayout new).
+	view node: Morph using: (KLCube new fillColor: Color random).
+	view edges: (Morph  subclasses) from: #yourself to: #superclass.
+\end{lstlisting}
 \paragraph{Composition}
 
 %=======
