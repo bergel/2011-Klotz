@@ -401,6 +401,34 @@ as the \emph{nodes} were at the surface of a Sphere,centered on the
 	view node: Morph using: (KLCube new fillColor: Color random).
 	view edges: (Morph  subclasses) from: #yourself to: #superclass.
 \end{lstlisting}
+\fig{}{0.7}{figure8.png}{Sphere Layout}
+
+\emph{Block Layout}: It is a \emph{layout} that can be used to 
+analyze diferences between packages. It works with the concept
+of \emph{blocks} wich are the representation of related \emph{nodes}
+as a single entity. Each \emph{block} is diferenced by color and the
+chosen analysis for each \emph{block} is completely defined by the
+user. The \emph{blocks} are displayed in a way that the bigger one
+can be easily visualized.
+\begin{lstlisting}
+view applyLayout: (KLBlockLayout new
+	with: {view nodes: ((PackageInfo named: 'Klotz-Example') classes) 
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Morphic') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Shapes') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Easel') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Layouts') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Kernel') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Normalizer') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+\end{lstlisting}
+\fig{}{0.7}{figure9.png}{Block Layout}
+
 \paragraph{Composition}
 
 %=======
