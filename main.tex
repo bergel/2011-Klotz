@@ -444,9 +444,31 @@ view applyLayout: (KLBlockLayout new
 
 \begin{itemize}
 \item \emph{The visualization engine should be domain independent.}
+Since a visualization software must represent abstract \emph{models}
+the engine itself must have a system to generate \emph{abstract analisys},
+analisys of features that are not yet evaluated when are defined, 
+for any kind of (numerable) property that could be needed. This way
+the \emph{model} will only define the values to be represented, not
+the way they will be displayed.
+
 \item \emph{Visualizations should be easily composed from simpler parts.}
+Every visualization needs to be varible, there is no use in  defining
+any posible visualization, so it must be a composition of simple elements,
+that can be manage to achieve the display defined on the visualization kind.
+Representing kinds of visualizations as \emph{layouts}, elements as \emph{nodes},
+and relations as \emph{edges} is a easy to understand way of composing a
+vizualization.
+ 
 \item \emph{The visualization should be definable at a fine grained level.}
+As mentioned before, representing visualizations as \emph{layouts}, elements as 
+\emph{nodes}, and relations as \emph{edges} gives the posibility to 
+manage every aspect of a visualization on its definition. Every wanted
+property to be display can be include on the definition of the \emph{nodes},
+any relation needed can be manage with \emph{edges} and for the actual display
+there are the \emph{layouts}.
+   
 \item \emph{Object creation overhead should be kept to a minimum.}
+
 \item \emph{The visualization description should be declarative.}
 \end{itemize}
 
