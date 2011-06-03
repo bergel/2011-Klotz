@@ -373,7 +373,7 @@ and a previous scripts pane, to remember prior launched examples
 on the easel. % add commands to manage perspective
    
 
-\paragraph{Layout}: %:still working on it
+\paragraph{Layout}:
 The main objective of having a 3D engine is to have richer 
 \emph{layouts} capable of representing the same \emph{models} 
 that can be generated in 2D, but with the posibility of adding 
@@ -509,10 +509,24 @@ view applyLayout: (KLBlockLayout new
 		using: (KLCube new width: #numberOfMethods; 
 							height: #numberOfInstanceVariables; 
 							depth:#numberOfMethods;
-							fillColor: Color red;
+							fillColor: Color blue;
 							yourself)})
 \end{lstlisting}
 \fig{}{1.0}{figure10.png}{Compiler Kernel and ParseNodes}
+This kind visualization expresses useful information when looking for
+smelly code or wanting to do some refactoring. The code before give 3 
+conclutions, among others, that come directly from figure 10:
+every class of these 2 packages are highly functional, they are not
+meant to actually represent a structure with lots of variables, which
+is consistent with their real purpose. The \emph{ParseNodes} package
+functionalities are concentrated on 3 classes (B in the figure), 
+again consist with already known information (\emph{ParseNode}, 
+\emph{BlockNode} and \emph{MessageNode} classes). Also the {Kernel} 
+package contain clases with no instance variables at all (A in the figure),
+wich is also consistent with verifiable information (every subclass of 
+\emph{BytecodeEncoder} have no instance variables. 
+
+
 %=======
 \subsection{Scatterplot}
 Tipically, to represent code properties directly as the dimentions
@@ -536,6 +550,14 @@ view applyLayout:
 		z: #numberOfMethods) "the, not visible here, green line" 
 \end{lstlisting}
 \fig{}{0.6}{figure11.png}{The Klotz Kernel Package}
+This visualization show some tendencies (figure 11):
+most classes in the package are quite simple and similar,
+with few attributes and instance variables (low x and y), and 
+also most of those with lots of attributes and instance variables
+are also those with lots of methods, high depth (high z). Knowing
+this tendencies its easy to tell which classes hold great 
+responsibility on the system.
+
 
 
 
