@@ -426,6 +426,8 @@ view applyLayout: (KLBlockLayout new
 		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
 	with: {view nodes: ((PackageInfo named: 'Klotz-Shapes') classes)
 		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+	with: {view nodes: ((PackageInfo named: 'Klotz-Events') classes)
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)};		
 	with: {view nodes: ((PackageInfo named: 'Klotz-Easel') classes)
 		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
 	with: {view nodes: ((PackageInfo named: 'Klotz-Layouts') classes)
@@ -433,7 +435,7 @@ view applyLayout: (KLBlockLayout new
 	with: {view nodes: ((PackageInfo named: 'Klotz-Kernel') classes)
 		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
 	with: {view nodes: ((PackageInfo named: 'Klotz-Normalizer') classes)
-		using: (KLCube new height: #numberOfInstanceVariables; yourself)};
+		using: (KLCube new height: #numberOfInstanceVariables; yourself)})
 \end{lstlisting}
 \fig{}{0.7}{figure9.png}{Block Layout}
 
@@ -466,10 +468,19 @@ manage every aspect of a visualization on its definition. Every wanted
 property to be display can be include on the definition of the \emph{nodes},
 any relation needed can be manage with \emph{edges} and for the actual display
 there are the \emph{layouts}.
-   
-\item \emph{Object creation overhead should be kept to a minimum.}
 
 \item \emph{The visualization description should be declarative.}
+In order to represent the required visualization, without having to 
+actually learn the base lenguage code, the scripting lenguage itself
+must express the logic of the computation without describing the control 
+flow. Smalltalk is a lenguage that follows this paradigm, but this is
+hardly enougth to make the script easy to follow. The actual computation
+behind the system is controlled by the instructions \emph{node:/nodes:}, 
+\emph{edge:/edges:} and \emph{applyLayout:}. Most times, the visualization
+need more than just this instructions, it needs to control the \emph{shape}
+of both \emph{nodes} and \emph{edges}, with the instruction \emph{using:}. 
+For the \emph{layouts}, every \emph{layout} contains its own structure to 
+define its parameters.   
 \end{itemize}
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -477,9 +488,55 @@ there are the \emph{layouts}.
 
 %=======
 \subsection{Codecity}
+A first application that come in handy, using the \emph{Block Layout},
+is to "build" a codecity, to represent the code of an entire program
+in a single visualization. To achieve a visualization that actually 
+displays a program, in a system where the visualization are not focus
+on that matter, the definition of the visualization must know contain
+some of its information.
 
+The following code displays, the most usefull to mesure, properties of 
+2 packages of the \emph{Compiler} system of Pharo:
+\begin{lstlisting}
+view applyLayout: (KLBlockLayout new
+	with: {view nodes: ((PackageInfo named:'Compiler-ParseNodes') classes) 
+		using: (KLCube new width: #numberOfMethods; 
+							height: #numberOfInstanceVariables; 
+							depth:#numberOfMethods;
+							fillColor: Color lightBlue;
+							 yourself)};
+	with: {view nodes: ((PackageInfo named: 'Compiler-Kernel') classes)
+		using: (KLCube new width: #numberOfMethods; 
+							height: #numberOfInstanceVariables; 
+							depth:#numberOfMethods;
+							fillColor: Color red;
+							yourself)})
+\end{lstlisting}
+\fig{}{1.0}{figure10.png}{Compiler Kernel and ParseNodes}
 %=======
 \subsection{Scatterplot}
+Tipically, to represent code properties directly as the dimentions
+of the \emph{nodes} is not necesarily the best way to compare 
+them, sometimes is usefull enought to compare such measures to 
+just contrast the values themselves. Using a scatter plot, 
+a type of mathematical diagram that use Cartesian coordinates to 
+display values for 2 (or 3 on our 3D \emph{model}) variables for 
+a set of data, the \emph{nodes} just represent the entity itself, 
+and the properties are  parametrized with the \emph{node} position.
+
+Using the \emph{Scatter Cube Layout}, 3D scatter plot can be defined
+in a simple intruction. The following code presents an analisys of
+the \emph{Klotz-Kernel} package:
+\begin{lstlisting}
+view nodes: ((PackageInfo named:'Klotz-Kernel') classes).
+view applyLayout: 
+(KLScatterCubeLayout 
+	new x: #numberOfAttributes; "the blue line"
+		y: #numberOfInstanceVariables; "the red line"
+		z: #numberOfMethods) "the, not visible here, green line" 
+\end{lstlisting}
+\fig{}{0.6}{figure11.png}{The Klotz Kernel Package}
+
 
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
