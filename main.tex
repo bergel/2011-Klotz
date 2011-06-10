@@ -399,7 +399,6 @@ view applyLayout: (KLCubeLayout new).
 \end{lstlisting}
 \fig{}{0.3}{figure7.png}{Cube Layout}
 
- %:this layout's code highly smells, must be redefined
 \emph{Sphere Layout}: It is a \emph{layout} that makes the display
 as the \emph{nodes} were at the surface of a Sphere,centered on the
 \emph{view} center. 
@@ -565,14 +564,25 @@ responsibility on the system.
 \section{Implementation} \seclabel{implementation}
 %=======
 \subsection{Performance}
-The current version of \emph{Klotz}, yet not optimaced, provides
+The current version of \emph{Klotz}, yet not optimized, provides
 support up to 10000 \emph{nodes} on screen, as well as, 
 10000 \emph{edges} between these \emph{nodes}.
+\fig{}{0.8}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
+As shown in figure 12, the \emph{Easel} provides the expected results
+almost in linear proportion with the quantity of \emph{nodes}/\emph{edges}, 
+wich is a great result, for a graphical interface. It also shown not
+major difference between the computation of different kinds of \emph{Layouts}, 
+even using \emph{edges}. This result seem to be perfect, but thats only 
+because the quantity is still not demanding for the system.
 
-
-\fig{}{0.8}{graph1}{hello world}
-\fig{}{0.8}{graph2}{hello world}
-
+\fig{}{0.8}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
+On figure 13, as mentioned before, the tendency to go in almost 
+linear proportion is still there, for displaying \emph{Layouts} 
+with just \emph{nodes}, but when it comes to add \emph{edges}
+the proportion happens to be exponential, wich is far from
+a good system, but since there is no real need to actually 
+display 1000 \emph{nodes} with 1000 \emph{edges} between them (and
+if there is, its not common) \emph{Klotz} keeps this specification. 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \seclabel{relatedwork}
 
