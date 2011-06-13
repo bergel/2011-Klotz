@@ -245,6 +245,8 @@ Numerous frameworks have been offered by the Smalltalk community to visualize da
 
 We built on the experienced we gained with Mondrian by proposing a new visualization engine that add a third dimension to the graphical representation. Klotz takes a new rendering engine to the main features of Mondrian, namely the scripting language and the interactive easel.
 
+Contrary to other Smalltalk 3D visualization engines (Lumi\`ere\cite{Oliv09a}, Jun\footnote{\url{http://aokilab.kyoto-su.ac.jp/jun/index.html}}), Klotz does not rely on OpenGL or any external libraries. The generation of 3D graphics is solely based on Morph facilities. 
+
 The paper is structured as follows:
 \secref{klotz} presents the essential characteristics of Klotz. It progressively presents Klotz' features illustrated by short and concise scripts. 
 \secref{applications} gives two layouts offered by Klotz.
@@ -262,9 +264,12 @@ The paper is structured as follows:
 
 %=======
 \subsection{Klotz in a nutshell} \seclabel{nutshell}
-Klotz is a Framework, based on simple 3D graphic elements,
-that are meant to work as metrics to specify characteristics of
-code. The elements to work with are cubes and edges between them.
+Klotz is an agile 3-dimensional visualization engine. Visualizations are made of cubes and lines. Contrary to other 3D visualization frameworks available on Smalltalk, Klotz maps each graphical element to an object that belongs to a particular user-defined domain. Visual dimensions of a graphical element is the result of applying metrics on the visualized domain. 
+
+Klotz' objective is to offer a flexible and agile tool to visualize any arbitrary domain expressed in terms of objects and relations without any prior preparation. Visualizations are described 
+\ab{HERE}
+
+Agility of Klotz is expressed as a scripting 
 
 The goal of Klotz is to offer a flexible solution to visualize software 
 in 3 dimensions. Klotz offers a scripting language, an API and an easel to 
@@ -595,7 +600,9 @@ responsibility on the system.
 The current version of \emph{Klotz}, yet not optimized, provides
 support up to 10000 \emph{nodes} on screen, as well as, 
 10000 \emph{edges} between these \emph{nodes}.
-\fig{}{0.8}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
+
+\fig{}{0.5}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
+
 As shown in figure 12, the \emph{Easel} provides the expected results
 almost in linear proportion with the quantity of \emph{nodes}/\emph{edges}, 
 wich is a great result, for a graphical interface. It also shown not
@@ -603,14 +610,29 @@ major difference between the computation of different kinds of \emph{Layouts},
 even using \emph{edges}. This result seem to be perfect, but thats only 
 because the quantity is still not demanding for the system.
 
-\fig{}{0.8}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
+\fig{}{0.5}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
+
 On figure 13, as mentioned before, the tendency to go in almost 
 linear proportion is still there, for displaying \emph{Layouts} 
 with just \emph{nodes}, but when it comes to add \emph{edges}
-the proportion happens to be exponential, wich is far from
+the proportion happens to be exponential, which is far from
 a good system, but since there is no real need to actually 
 display 1000 \emph{nodes} with 1000 \emph{edges} between them (and
 if there is, its not common) \emph{Klotz} keeps this specification. 
+
+%:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion} \seclabel{discussion}
+
+The Klotz graphic generation solely uses Morph facilities. The most common approach to visualize 3d graphics is to use OpenGL, a standard in the field. We deliberately decided to not use OpenGL for a number of practical reasons:
+
+\begin{itemize}
+\item OpenGL is distributed as a set of natives libraries, depending on the operating system. Libraries are accessed from FFI or Alien, two technologies that interoperate with native libraries. Unfortunately, the recent advances with the Pharo virtual machine, external libraries are not easily accessible within Pharo. 
+
+\item The visualizations produced with Mondrian rarely go over 2,000 nodes and 1,000 edges. It is reasonable to expect similar figure as the upper limit for Klotz. OpenGL enables sophisticated rendering, including a high number of rendered polygons and advanced light composition. We do not expect to have such a need in a close future.
+\end{itemize}
+
+Basing Klotz on OpenGL is clearly on our agenda. Alien needs to gain stability, especially with the Pharo JIT virtual machine (Cog).
+
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \seclabel{relatedwork}
 
