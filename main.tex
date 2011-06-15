@@ -12,11 +12,11 @@
 %\documentclass[times, 10pt,twocolumn]{article} 
 %\documentclass[preprint,10pt]{sigplanconf}
 
-\documentclass[runningheads]{llncs}
-%\documentclass{sig-alternate}
+%\documentclass[runningheads]{llncs}
+\documentclass{sig-alternate}
 
 % constants
-\newcommand{\Title}{Klotz: Agile 3D Visualization}
+\newcommand{\Title}{Klotz: An Agile 3D Visualization Engine}
 \newcommand{\TitleShort}{\Title}
 \newcommand{\Authors}{Ricardo Jacas~~~~~Alexandre Bergel}
 \newcommand{\AuthorsShort}{R. Jacas, A. Bergel}
@@ -181,36 +181,41 @@
 %\conferenceinfo{ECOOP}{'11}
 
 \title{\Title}
-\titlerunning{\Title}
+%\titlerunning{\Title}
 
-%\author{Alexandre Bergel\\
-%Pleiad Lab, Department of Computer Science (DCC),\\ University of Chile, Santiago, Chile\\ [1 ex]
-%\href{http://bergel.eu}{http://bergel.eu}
-%}
-
-\author{\Authors}
-\authorrunning{\AuthorsShort}
-
-\institute{PLEIAD Lab, Department of Computer Science (DCC), \\University of Chile, Santiago, Chile\\
+%ACM
+\author{\Authors\\
+Pleiad Lab, Department of Computer Science (DCC),\\ University of Chile, Santiago, Chile\\ [1 ex]
 \url{ricardo.jacas@gmail.com}~~~~
 \url{http://bergel.eu}
 }
+
+%Springer
+%\author{\Authors}
+%\authorrunning{\AuthorsShort}
+
+%\institute{PLEIAD Lab, Department of Computer Science (DCC), \\University of Chile, Santiago, Chile\\
+%\url{ricardo.jacas@gmail.com}~~~~
+%\url{http://bergel.eu}
+%}
 
 
 \newcommand{\spp}{~~~~~~~}
 
 \maketitle
 
-%\cvsversion
-
 %\begin{center}
 %\textbf{Accepted at ECOOP'11 - Do not distribute, this is not the final version}
 %\end{center}
 
 \begin{abstract}
+Klotz is a visualization engine that graphically represents in 3 dimensions. Visualizations are produced from an arbitrary model, typically a set of plain objects and connections between them. No preparation of the model is required to be rendered.
+Klotz uses a semi-descriptive scripting language to easily and interactively build visualizations. 
+
+Klotz offers two dedicated layouts to easily exploit the third dimension to visualize data. The district layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
+
+Klotz is entirely implemented in Pharo. The engine is fully based on the facilities offered by Morph.
 % What is the problem
-
-
 % Why is the problem a problem?
 % What's the surprising Idea?
 % What's the consequence?
@@ -234,6 +239,21 @@
 
 \section{Introduction} \seclabel{introduction}
 
+Visual displays allow the human brain to study multiple aspects of complex problems in parallel. Visualization, ``allows for a higher level of abstract, a closer mapping to the problem domain''~\cite{Petr95a}. 
+
+Numerous frameworks have been offered by the Smalltalk community to visualize data. Mondrian\footnote{\url{http://www.moosetechnology.org/seaside/pier/tools/mondrian}}~\cite{Meye06a} is a flexible and agile visualization engine that uses two dimensional representation to visualize data.  
+
+We built on the experienced we gained with Mondrian by proposing a new visualization engine that add a third dimension to the graphical representation. Klotz takes a new rendering engine to the main features of Mondrian, namely the scripting language and the interactive easel.
+
+Contrary to other Smalltalk 3D visualization engines (Lumi\`ere\cite{Oliv09a}, Jun\footnote{\url{http://aokilab.kyoto-su.ac.jp/jun/index.html}}), Klotz does not rely on OpenGL or any external libraries. The generation of 3D graphics is solely based on Morph facilities. 
+
+The paper is structured as follows:
+\secref{klotz} presents the essential characteristics of Klotz. It progressively presents Klotz' features illustrated by short and concise scripts. 
+\secref{applications} gives two layouts offered by Klotz.
+\secref{implementation} briefly describes the main points of Klotz implementation and gives some benchmarks.
+\secref{conclusion} concludes.
+
+
 % What is the problem
 % Why is the problem a problem?
 % What's the surprising Idea?
@@ -244,9 +264,12 @@
 
 %=======
 \subsection{Klotz in a nutshell} \seclabel{nutshell}
-Klotz is a Framework, based on simple 3D graphic elements,
-that are meant to work as metrics to specify characteristics of
-code. The elements to work with are cubes and edges between them.
+Klotz is an agile 3-dimensional visualization engine. Visualizations are made of cubes and lines. Contrary to other 3D visualization frameworks available on Smalltalk, Klotz maps each graphical element to an object that belongs to a particular user-defined domain. Visual dimensions of a graphical element is the result of applying metrics on the visualized domain. 
+
+Klotz' objective is to offer a flexible and agile tool to visualize any arbitrary domain expressed in terms of objects and relations without any prior preparation. Visualizations are described 
+\ab{HERE}
+
+Agility of Klotz is expressed as a scripting 
 
 The goal of Klotz is to offer a flexible solution to visualize software 
 in 3 dimensions. Klotz offers a scripting language, an API and an easel to 
@@ -271,7 +294,7 @@ view node: KLEaselCommand using: (KLCube new fillColor: Color random).
 view edges: elementsToVisualize from: #yourself to: #superclass.   
 \end{lstlisting}
 
-\fig{}{0.5}{figure1.png}{KLEaselCommand subclasses.}
+\fig{}{0.4}{figure1.png}{KLEaselCommand subclasses.}
 
 
 %=======
@@ -295,7 +318,9 @@ view node: Magnitude.
 view node: Number.
 view node: Time    
 \end{lstlisting}
-\fig{}{0.3}{figure2.png}{Magnitude class with 2 of his subclasses.}
+
+\fig{}{0.2}{figure2.png}{Magnitude class with 2 of his subclasses.}
+
 Other way to define them, and customise the \emph{cubes} related to the 
 \emph{nodes}, is by using the instructions \emph{node: using:} and 
 \emph{nodes: using:}, both instructions are meant to directly define 
@@ -304,7 +329,8 @@ or each \emph{node} in the second case.
 \begin{lstlisting}
 view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVariables)    
 \end{lstlisting}
-\fig{}{0.5}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
+
+\fig{}{0.3}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
 
 Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
 4 ways: The instructions \emph{edge: from: to:} and \emph{edges: from: to:} 
@@ -313,7 +339,7 @@ apply, respectively, the \emph{edge} (\emph{edges}) between 2 cubes, each \emph{
 view nodes: (1 to: 5).	
 view edges: (1 to: 4) from: #yourself to: 5 
 \end{lstlisting}
-\fig{}{0.5}{figure4.png}{Basic edges}
+\fig{}{0.3}{figure4.png}{Basic edges}
 
 And also as the previous definition the keyword \emph{using:} is used
 to define the metrics of the \emph{edge} itself.  
@@ -321,7 +347,7 @@ to define the metrics of the \emph{edge} itself.
 view nodes: (1 to: 5).	
 view edges: (1 to: 4) from: #yourself to: 5 using: (KLLine new width: #yourself)
 \end{lstlisting}
-\fig{}{0.5}{figure5.png}{Basic edges, using metrics}
+\fig{}{0.3}{figure5.png}{Basic edges, using metrics}
 
 To apply \emph{Layouts} on the current \emph{nodes} the scripting
 language uses the instruction \emph{applyLayout:}. \emph{Layouts}
@@ -335,7 +361,7 @@ colors := (Color colorNames collect:
 view nodes: colors using: (KLCube new fillColor: #yourself).
 view applyLayout: (KLCubeLayout new).
 \end{lstlisting}
-\fig{}{0.3}{figure6.png}{All Colors available in Pharo}
+\fig{}{0.2}{figure6.png}{All Colors available in Pharo}
  
 The special value system mentioned before is a way of sending
 mesages to \emph{nodes} or \emph{edges} that will be evaluated
@@ -399,7 +425,7 @@ view
 	node: 6.
 view applyLayout: (KLCubeLayout new). 
 \end{lstlisting}
-\fig{}{0.3}{figure7.png}{Cube Layout}
+\fig{}{0.2}{figure7.png}{Cube Layout}
 
 \emph{Sphere Layout}: It is a \emph{layout} that makes the display
 as the \emph{nodes} were at the surface of a Sphere,centered on the
@@ -410,7 +436,7 @@ as the \emph{nodes} were at the surface of a Sphere,centered on the
 	view node: Morph using: (KLCube new fillColor: Color random).
 	view edges: (Morph  subclasses) from: #yourself to: #superclass.
 \end{lstlisting}
-\fig{}{0.7}{figure8.png}{Sphere Layout}
+\fig{}{0.4}{figure8.png}{Sphere Layout}
 
 \emph{Block Layout}: It is a \emph{layout} that can be used to 
 analyze diferences between packages. It works with the concept
@@ -438,7 +464,7 @@ view applyLayout: (KLBlockLayout new
 	with: {view nodes: ((PackageInfo named: 'Klotz-Normalizer') classes)
 		using: (KLCube new height: #numberOfInstanceVariables; yourself)})
 \end{lstlisting}
-\fig{}{0.7}{figure9.png}{Block Layout}
+\fig{}{0.4}{figure9.png}{Block Layout}
 
 \paragraph{Composition}
 
@@ -513,7 +539,9 @@ view applyLayout: (KLBlockLayout new
 							fillColor: Color blue;
 							yourself)})
 \end{lstlisting}
-\fig{}{1.0}{figure10.png}{Compiler Kernel and ParseNodes}
+
+\fig{}{0.55}{figure10.png}{Compiler Kernel and ParseNodes}
+
 This kind visualization expresses useful information when looking for
 smelly code or wanting to do some refactoring. The code before give 3 
 conclutions, among others, that come directly from figure 10:
@@ -542,6 +570,7 @@ and the properties are  parametrized with the \emph{node} position.
 Using the \emph{Scatter Cube Layout}, 3D scatter plot can be defined
 in a simple intruction. The following code presents an analisys of
 the \emph{Klotz-Kernel} package:
+
 \begin{lstlisting}
 view nodes: ((PackageInfo named:'Klotz-Kernel') classes).
 view applyLayout: 
@@ -550,7 +579,9 @@ view applyLayout:
 		y: #numberOfInstanceVariables; "the red line"
 		z: #numberOfMethods) "the, not visible here, green line" 
 \end{lstlisting}
-\fig{}{0.6}{figure11.png}{The Klotz Kernel Package}
+
+\fig{}{0.4}{figure11.png}{The Klotz Kernel Package}
+
 This visualization show some tendencies (figure 11):
 most classes in the package are quite simple and similar,
 with few attributes and instance variables (low x and y), and 
@@ -564,12 +595,16 @@ responsibility on the system.
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implementation} \seclabel{implementation}
+
 %=======
+
 \subsection{Performance}
 The current version of \emph{Klotz}, yet not optimized, provides
 support up to 10000 \emph{nodes} on screen, as well as, 
 10000 \emph{edges} between these \emph{nodes}.
-\fig{}{0.8}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
+
+\fig{}{0.5}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
+
 As shown in figure 12, the \emph{Easel} provides the expected results
 almost in linear proportion with the quantity of \emph{nodes}/\emph{edges}, 
 wich is a great result, for a graphical interface. It also shown not
@@ -577,14 +612,29 @@ major difference between the computation of different kinds of \emph{Layouts},
 even using \emph{edges}. This result seem to be perfect, but thats only 
 because the quantity is still not demanding for the system.
 
-\fig{}{0.8}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
+\fig{}{0.5}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
+
 On figure 13, as mentioned before, the tendency to go in almost 
 linear proportion is still there, for displaying \emph{Layouts} 
 with just \emph{nodes}, but when it comes to add \emph{edges}
-the proportion happens to be exponential, wich is far from
+the proportion happens to be exponential, which is far from
 a good system, but since there is no real need to actually 
 display 1000 \emph{nodes} with 1000 \emph{edges} between them (and
 if there is, its not common) \emph{Klotz} keeps this specification. 
+
+%:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion} \seclabel{discussion}
+
+The Klotz graphic generation solely uses Morph facilities. The most common approach to visualize 3d graphics is to use OpenGL, a standard in the field. We deliberately decided to not use OpenGL for a number of practical reasons:
+
+\begin{itemize}
+\item OpenGL is distributed as a set of natives libraries, depending on the operating system. Libraries are accessed from FFI or Alien, two technologies that interoperate with native libraries. Unfortunately, the recent advances with the Pharo virtual machine, external libraries are not easily accessible within Pharo. 
+
+\item The visualizations produced with Mondrian rarely go over 2,000 nodes and 1,000 edges. It is reasonable to expect similar figure as the upper limit for Klotz. OpenGL enables sophisticated rendering, including a high number of rendered polygons and advanced light composition. We do not expect to have such a need in a close future.
+\end{itemize}
+
+Basing Klotz on OpenGL is clearly on our agenda. Alien needs to gain stability, especially with the Pharo JIT virtual machine (Cog).
+
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \seclabel{relatedwork}
 
@@ -596,6 +646,8 @@ CodeCity~\cite{Wett08d}
 \section{Conclusion} \seclabel{conclusion}
 
 
+\paragraph{Acknowledgment} 
+We thank Patricio Plaza for his effort and participation on an early version of Klotz.
 
 %{\small 
 %\paragraph{Acknowledgment.} We thank Mircea Lungu, Oscar Nierstrasz, Lukas Renggli and Romain Robbes for the multiple discussions we had and their comments on an early draft of the paper.
