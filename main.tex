@@ -74,7 +74,7 @@
 	breakautoindent=true,
 	columns=fullflexible,
 	showstringspaces=false,
-	basicstyle=\footnotesize\sffamily,
+	basicstyle=\footnotesize\ttfamily,
 	% background
 	frame=single,
     framerule=0pt,
@@ -264,75 +264,75 @@ The paper is structured as follows:
 
 %=======
 \subsection{Klotz in a nutshell} \seclabel{nutshell}
-Klotz is an agile 3-dimensional visualization engine. Visualizations are made of cubes and lines. Contrary to other 3D visualization frameworks available on Smalltalk, Klotz maps each graphical element to an object that belongs to a particular user-defined domain. Visual dimensions of a graphical element is the result of applying metrics on the visualized domain. 
+Klotz is an agile 3-dimensional visualization engine. Visualizations are made of cubes and lines. Contrary to other 3D visualization frameworks available on Smalltalk, Klotz maps each graphical element to an object that belongs to an user-defined domain. Visual dimensions of a graphical element is the result of applying metrics on the visualized domain. 
 
-Klotz' objective is to offer a flexible and agile tool to visualize any arbitrary domain expressed in terms of objects and relations without any prior preparation. Visualizations are described 
-\ab{HERE}
+Klotz' objective is to offer a flexible and agile tool to visualize any arbitrary domain expressed in terms of objects and relations without any prior preparation. Visualizations are described by means of a scripting language. Consider the illustrative script:
 
-Agility of Klotz is expressed as a scripting 
+\begin{lstlisting}[numbers=left]
+| subclasses |subclasses := KLEaselCommand subclasses.view nodes: subclasses.view applyLayout:  (KLSphereLayout new).view node: KLEaselCommand using: (KLCube new fillColor: Color green).view edges: subclasses from: #yourself to: #superclass.   \end{lstlisting}
 
-The goal of Klotz is to offer a flexible solution to visualize software 
-in 3 dimensions. Klotz offers a scripting language, an API and an easel to 
-``compose'' a visualization. 
+Line 1 defines a temporary variable \ct{models}. 
+The variable is initialized in Line 2 with the all the subclasses of the class \ct{KLEaselCommand}.
+Line 3 adds the objects referenced by \ct{models} into the view. Each of the subclass of \ct{KLEaselCommand} is represented by a cube.
+Line 4 orders the cube along a sphere layout.
 
-The example below shows this very main goal: the script creates a group of
-\emph{nodes} that represent some objects (in this case the \emph{classes} 
-of our \emph{model}).The instruction \emph{applyLayout} sets the method 
-the \emph{cubes} will follow to display themselves (in this case on a 
-sphere). And after adding another \emph{cube} at the center (the basic 
-position for any \emph{cube}), by using \emph{edges}, it defines the way 
-every \emph{edge} will be draw (the \emph{edge} depends on the previous 
-definition of the \emph{cubes}).
+Line 6 adds a new node, \ct{KLEaselCommand} the root of the class hierarchy. The node is colored in green.
+Line 7 adds as many edges there is elements in the variable \ct{models}. For each subclass, an edge is drawn from the subclass to its superclass, \ct{KLEaselCommand}. The result is depicted in \figref{figure1.png}.
 
-\begin{lstlisting}
-| elementsToVisualize |
-elementsToVisualize := KLEaselCommand  subclasses.
-view nodes: elementsToVisualize.
-view applyLayout: KLSphereLayout new.
+\fig{h}{0.4}{figure1.png}{KLEaselCommand subclasses.}
 
-view node: KLEaselCommand using: (KLCube new fillColor: Color random).
-view edges: elementsToVisualize from: #yourself to: #superclass.   
-\end{lstlisting}
-
-\fig{}{0.4}{figure1.png}{KLEaselCommand subclasses.}
-
+Agility of Klotz is expressed via an easel to interactively ``compose'' a visualization.
 
 %=======
 \subsection{Scripting visualizations with Klotz} \seclabel{scripting}
-The Klotz scripting lenguage is based on Pharo Smalltalk
-(since the application is made on it) and 4 basic principles
-to manage the interaction between the elements on the \emph{view}:
-The use of \emph{nodes}(i) to represent the elements that are
-displayed, \emph{edges}(ii) to represent the relationship between
-the selected \emph{nodes}, \emph{Layouts}(iii) to define the way the
-\emph{view} distributes the objetcs on itself, and a special value
-system defined by Pharo symbols used to access to properties of
-the object being modeled (iv).  
 
-The scripting language supports 4 diferent ways of defining \emph{nodes}:
-The instructions \emph{node:} and \emph{nodes:} define standard 
-\emph{nodes}(blue colored, "1" length edged \emph{cubes}), to set 1 or many 
-\emph{nodes} at the same time, respectively.
+The Klotz scripting language is plain Pharo code. Each script is based on 4 principles:
+
+\begin{itemize}
+\item elements composing the visualization are represented as \emph{nodes}. Each node may have a shape and color that reflects some characteristics of the represented node.
+\item relations between elements are represented with \emph{edges}. The color and width of a shape depends on some characteristics of the edge.
+\item elements may be ordered using \emph{layouts}. A layout may use edges to direct the ordering.
+\item containment is expressed with a \emph{view}, an object that enables the construction of the visualization by offering numerous methode.\ab{Is there more to say?}
+\end{itemize}
+
+%to manage the interaction between the elements on the \emph{view}:
+%The use of \emph{nodes}(i) to represent the elements that are
+%displayed, \emph{edges}(ii) to represent the relationship between
+%the selected \emph{nodes}, \emph{Layouts}(iii) to define the way the
+%\emph{view} distributes the objetcs on itself, and a special value
+%system defined by Pharo symbols used to access to properties of
+%the object being modeled (iv).  
+
+The scripting language supports 4 different ways of defining nodes. 
+The messages \ct{node:} create an individual node using the default visual properties (colored in blue, thin black border line). A variant of it is \ct{nodes:} to add multiple nodes in one single instruction. The script 
+
 \begin{lstlisting}
 view node: Magnitude.
 view node: Number.
 view node: Time    
 \end{lstlisting}
 
-\fig{}{0.2}{figure2.png}{Magnitude class with 2 of his subclasses.}
+is equivalent to
 
-Other way to define them, and customise the \emph{cubes} related to the 
-\emph{nodes}, is by using the instructions \emph{node: using:} and 
-\emph{nodes: using:}, both instructions are meant to directly define 
-the \emph{cube} that will represent the inner \emph{model} of the \emph{node}, 
-or each \emph{node} in the second case.
+\begin{lstlisting}
+view nodes: { Magnitude. Number . Time}
+\end{lstlisting}
+
+The result is shown in \figref{figure2.png}.
+
+\fig{h}{0.2}{figure2.png}{Magnitude class with 2 of his subclasses.}
+
+The visual representation may be particularized for the provided nodes. The message \ct{node:using:} and \ct{nodes:using:} allow graphical cube to be customized with metrics computed on the represented model. Consider the example, depicted in \figref{figure3.png}:
+
 \begin{lstlisting}
 view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVariables)    
 \end{lstlisting}
 
-\fig{}{0.3}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
+\fig{h}{0.3}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
 
-Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
+The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. \ab{@@pass until here}
+
+\ab{Can you adapt the example below with the Magnitude example. I like the idea to based our scripts on this example} Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
 4 ways: The instructions \emph{edge: from: to:} and \emph{edges: from: to:} 
 apply, respectively, the \emph{edge} (\emph{edges}) between 2 cubes, each \emph{edge}.
 \begin{lstlisting}
@@ -353,7 +353,7 @@ To apply \emph{Layouts} on the current \emph{nodes} the scripting
 language uses the instruction \emph{applyLayout:}. \emph{Layouts}
 define the methods (or metrics) that will be used to decide how
 to display the elements.The application of a \emph{Layout} will 
-affect every \emph{node}(\emph{edge}) defined before itself.
+affect every \emph{node}(\emph{edge}) defined before itself. \ab{I am not sure this example of colors is really interesting}
 \begin{lstlisting}
 | colors |
 colors := (Color colorNames collect: 
