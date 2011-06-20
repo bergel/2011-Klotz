@@ -269,7 +269,14 @@ Klotz is an agile 3-dimensional visualization engine. Visualizations are made of
 Klotz' objective is to offer a flexible and agile tool to visualize any arbitrary domain expressed in terms of objects and relations without any prior preparation. Visualizations are described by means of a scripting language. Consider the illustrative script:
 
 \begin{lstlisting}[numbers=left]
-| subclasses |subclasses := KLEaselCommand subclasses.view nodes: subclasses.view applyLayout:  (KLSphereLayout new).view node: KLEaselCommand using: (KLCube new fillColor: Color green).view edges: subclasses from: #yourself to: #superclass.   \end{lstlisting}
+| subclasses |
+subclasses := KLEaselCommand subclasses.
+view nodes: subclasses.
+view applyLayout:  (KLSphereLayout new).
+
+view node: KLEaselCommand using: (KLCube new fillColor: Color green).
+view edges: subclasses from: #yourself to: #superclass.   
+\end{lstlisting}
 
 Line 1 defines a temporary variable \ct{models}. 
 The variable is initialized in Line 2 with the all the subclasses of the class \ct{KLEaselCommand}.
@@ -332,20 +339,22 @@ view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVar
 
 The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. \ab{@@pass until here}
 
-\ab{Can you adapt the example below with the Magnitude example. I like the idea to based our scripts on this example} Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
+Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
 4 ways: The instructions \emph{edge: from: to:} and \emph{edges: from: to:} 
 apply, respectively, the \emph{edge} (\emph{edges}) between 2 cubes, each \emph{edge}.
 \begin{lstlisting}
-view nodes: (1 to: 5).	
-view edges: (1 to: 4) from: #yourself to: 5 
+view nodes: (Magnitude subclasses).	
+view edges: (Magnitude subclasses) from: #yourself to: (MetacelloVersionNumber)
 \end{lstlisting}
 \fig{}{0.3}{figure4.png}{Basic edges}
 
 And also as the previous definition the keyword \emph{using:} is used
 to define the metrics of the \emph{edge} itself.  
 \begin{lstlisting}
-view nodes: (1 to: 5).	
-view edges: (1 to: 4) from: #yourself to: 5 using: (KLLine new width: #yourself)
+view nodes: (Magnitude subclasses).	
+view nodes: (Magnitude subclasses).	
+view edges: (Magnitude subclasses) from: #yourself to: (MetacelloVersionNumber)
+				using:(KLLine new width: [:cl |( cl numberOfMethods / 30) rounded])	
 \end{lstlisting}
 \fig{}{0.3}{figure5.png}{Basic edges, using metrics}
 
