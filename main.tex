@@ -212,7 +212,7 @@ Pleiad Lab, Department of Computer Science (DCC),\\ University of Chile, Santiag
 Klotz is a visualization engine that graphically represents in 3 dimensions. Visualizations are produced from an arbitrary model, typically a set of plain objects and connections between them. No preparation of the model is required to be rendered.
 Klotz uses a semi-descriptive scripting language to easily and interactively build visualizations. 
 
-Klotz offers two dedicated layouts to easily exploit the third dimension to visualize data. The district layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
+Klotz offers two dedicated layouts to easily exploit the third dimension to visualize data. The block layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
 
 Klotz is entirely implemented in Pharo. The engine is fully based on the facilities offered by Morph.
 % What is the problem
@@ -606,11 +606,13 @@ support up to 10000 \emph{nodes} on screen, as well as,
 \fig{}{0.5}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
 
 As shown in figure 12, the \emph{Easel} provides the expected results
-almost in linear proportion with the quantity of \emph{nodes}/\emph{edges}, 
-wich is a great result, for a graphical interface. It also shown not
-major difference between the computation of different kinds of \emph{Layouts}, 
-even using \emph{edges}. This result seem to be perfect, but thats only 
-because the quantity is still not demanding for the system.
+almost in linear proportion with the quantity of \emph{nodes}, 
+wich is a great result, for a graphical interface. It also shown 
+not major difference between the computation of different kinds 
+of \emph{Layouts}, even those using \emph{edges}. This result seem 
+to be perfect, but thats only because the quantity is still not 
+demanding for the system. Note that on both figures the \emph{Layout} 
+with \emph{edges} have as much \emph{edges} as \emph{nodes}.  
 
 \fig{}{0.5}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
 
@@ -638,9 +640,34 @@ Basing Klotz on OpenGL is clearly on our agenda. Alien needs to gain stability, 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \seclabel{relatedwork}
 
-Lumiere~\cite{Oliv09a}
+\subsection{Lumiere~\cite{Oliv09a}}
+Lumiere is a 3D Framework,that applies a stage metaphor.
+This metaphor implies that all graphics are produced by cameras
+taking pictures of 3D shapes lit by the lights of the stage. A
+stage provides the setting for taking pictures of a composition 
+of visual objects we call micro-worlds. Lumiere's objective
+is to implement a 3D graphical support to Pharo programmers, at
+a high level of abstraction. This Framework uses OpenGL libraries
+designed for Pharo. As mentioned before, this libraries are 
+entirely dependant of the OS and the right native OpenGL packages
+withing the machine itself, to be used.
 
-CodeCity~\cite{Wett08d}
+On the other hand, Klotz do not represent a competitor on that 
+matter, Klotz is a 3D code vizualizacion engine, its goal is
+not focus on the actual quality of the graphic interface, but 
+on the expresiveness of the representation in orden to achieve
+a better comprension of the code. Right now Klotz graphical
+interface is a small engine that is completely based on the Morph
+engine, wich seems suficient for it  purposes. This does not
+mean to be the final core, eventually the system will need an
+external graphic engine, probably based on OpenGL, and that can
+also be Lumiere itself, but since the goal its not the actual
+graphics of Klotz (and the engines take to much effort on just
+configuration, external to the Klotz interface), this matter
+remains pending.
+
+\subsection{CodeCity~\cite{Wett08d}}
+
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \seclabel{conclusion}
