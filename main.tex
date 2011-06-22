@@ -128,6 +128,7 @@
 	 \newcommand{\version}{}}
 \newcommand{\rev}[2]{\nb{Reviewer #1}{red}{#2}}
 \newcommand{\ab}[1]{\nb{Alexandre}{blue}{#1}}
+\newcommand{\rj}[1]{\nb{Ricardo}{green}{#1}}
 \newcommand{\vp}[1]{\nb{Vanessa}{orange}{#1}}
 
 % graphics: \fig{position}{percentage-width}{filename}{caption}
@@ -362,15 +363,8 @@ To apply \emph{Layouts} on the current \emph{nodes} the scripting
 language uses the instruction \emph{applyLayout:}. \emph{Layouts}
 define the methods (or metrics) that will be used to decide how
 to display the elements.The application of a \emph{Layout} will 
-affect every \emph{node}(\emph{edge}) defined before itself. \ab{I am not sure this example of colors is really interesting}
-\begin{lstlisting}
-| colors |
-colors := (Color colorNames collect: 
-	 [:each | Color fromString: (each asString)]). "colors as Colors"
-view nodes: colors using: (KLCube new fillColor: #yourself).
-view applyLayout: (KLCubeLayout new).
-\end{lstlisting}
-\fig{}{0.2}{figure6.png}{All Colors available in Pharo}
+affect every \emph{node}(\emph{edge}) defined before itself.
+\rj{color example removed :P, every "numbers" examples changed}
  
 The special value system mentioned before is a way of sending
 mesages to \emph{nodes} or \emph{edges} that will be evaluated
@@ -426,15 +420,15 @@ of the result for each direction. if the element are less,
 it leaves the rest blank.
 \begin{lstlisting}
 view 
-	node: 1 using: (KLCube new width: 3; height: 5; depth: 2; yourself);
-	node: 2 using: (KLCube new width: 2; height: 8; depth: 8; yourself);
-	node: 3 using: (KLCube new width: 3; height: 5; depth: 2; yourself);
-	node: 4 using: (KLCube new width: 1; height: 2; depth: 3; yourself);
-	node: 5 using: (KLCube new width: 2; height: 2; depth: 4; yourself);
-	node: 6.
+	node: KLNode using: (KLCube new width:  #numberOfInstanceVariables; yourself);
+	node: KLEdge using: (KLCube new width:  #numberOfInstanceVariables;  yourself);
+	node: KLCube using: (KLCube new width:  #numberOfInstanceVariables; yourself);
+	node: KLLine using: (KLCube new width:  #numberOfInstanceVariables;  yourself);
+	node: KLPolygon using: (KLCube new width:  #numberOfInstanceVariables;  yourself);
+	node: KLLayout.
 view applyLayout: (KLCubeLayout new). 
 \end{lstlisting}
-\fig{}{0.2}{figure7.png}{Cube Layout}
+\fig{}{0.6}{figure7.png}{Cube Layout}
 
 \emph{Sphere Layout}: It is a \emph{layout} that makes the display
 as the \emph{nodes} were at the surface of a Sphere,centered on the
