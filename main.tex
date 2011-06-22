@@ -299,7 +299,7 @@ The Klotz scripting language is plain Pharo code. Each script is based on 4 prin
 \item elements composing the visualization are represented as \emph{nodes}. Each node may have a shape and color that reflects some characteristics of the represented node.
 \item relations between elements are represented with \emph{edges}. The color and width of a shape depends on some characteristics of the edge.
 \item elements may be ordered using \emph{layouts}. A layout may use edges to direct the ordering.
-\item containment is expressed with a \emph{view}, an object that enables the construction of the visualization by offering numerous methode.\ab{Is there more to say?}
+\item containment is expressed with a \emph{view}, an object that enables the construction of the visualization by offering numerous methods.%\ab{Is there more to say?}
 \end{itemize}
 
 %to manage the interaction between the elements on the \emph{view}:
@@ -327,7 +327,7 @@ view nodes: { Magnitude. Number . Time}
 
 The result is shown in \figref{figure2.png}.
 
-\fig{h}{0.2}{figure2.png}{Magnitude class with 2 of his subclasses.}
+\fig{h}{0.2}{figure2.png}{Magnitude class and 2 of its subclasses.}
 
 The visual representation may be particularized for the provided nodes. The message \ct{node:using:} and \ct{nodes:using:} allow graphical cube to be customized with metrics computed on the represented model. Consider the example, depicted in \figref{figure3.png}:
 
@@ -339,68 +339,73 @@ view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVar
 
 The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. \ab{@@pass until here}
 
-Just like it happens with the \emph{nodes}, the \emph{edges} can be defined in 
-4 ways: The instructions \emph{edge: from: to:} and \emph{edges: from: to:} 
-apply, respectively, the \emph{edge} (\emph{edges}) between 2 cubes, each \emph{edge}.
-\begin{lstlisting}
-view nodes: (Magnitude subclasses).	
-view edges: (Magnitude subclasses) from: #yourself to: (MetacelloVersionNumber)
-\end{lstlisting}
-\fig{}{0.3}{figure4.png}{Basic edges}
+Similarly with nodes edges are defined in one of four ways. The method \ct{edge:from:to:} and \ct{edges:from:to:} use default black and thin line shape offered by the view. Consider (\figref{figure4.png}):
 
-And also as the previous definition the keyword \emph{using:} is used
-to define the metrics of the \emph{edge} itself.  
 \begin{lstlisting}
-view nodes: (Magnitude subclasses).	
-view nodes: (Magnitude subclasses).	
-view edges: (Magnitude subclasses) from: #yourself to: (MetacelloVersionNumber)
-				using:(KLLine new width: [:cl |( cl numberOfMethods / 30) rounded])	
+view nodes: Magnitude subclasses.	
+view edges: (Magnitude subclasses) from: #yourself to: MetacelloVersionNumber
 \end{lstlisting}
-\fig{}{0.3}{figure5.png}{Basic edges, using metrics}
+\fig{h}{0.3}{figure4.png}{Basic edges}
 
-To apply \emph{Layouts} on the current \emph{nodes} the scripting
-language uses the instruction \emph{applyLayout:}. \emph{Layouts}
-define the methods (or metrics) that will be used to decide how
-to display the elements.The application of a \emph{Layout} will 
-affect every \emph{node}(\emph{edge}) defined before itself. \ab{I am not sure this example of colors is really interesting}
-\begin{lstlisting}
-| colors |
-colors := (Color colorNames collect: 
-	 [:each | Color fromString: (each asString)]). "colors as Colors"
-view nodes: colors using: (KLCube new fillColor: #yourself).
-view applyLayout: (KLCubeLayout new).
-\end{lstlisting}
-\fig{}{0.2}{figure6.png}{All Colors available in Pharo}
- 
-The special value system mentioned before is a way of sending
-mesages to \emph{nodes} or \emph{edges} that will be evaluated
-before drawing, and will mean something specific at that context:
-keywords like \emph{yourself}, \emph{class}, \emph{subclass}, etc.
-Who are mesages in Pharo, are interpreted by the graphic
-elements (\emph{cubes} and \emph{lines}) to define values
-coresponding to \emph{nodes} (\emph{edges}) information. 
+Since no layout is specified, the default layout is horizontal line.
+
+%And also as the previous definition the keyword \emph{using:} is used
+%to define the metrics of the \emph{edge} itself.  
+%\begin{lstlisting}
+%view nodes: (Magnitude subclasses).	
+%view nodes: (Magnitude subclasses).	
+%view edges: (Magnitude subclasses) from: #yourself to: (MetacelloVersionNumber)
+%				using:(KLLine new width: [:cl | (cl numberOfMethods / 30) rounded])	
+%\end{lstlisting}
+%\fig{}{0.3}{figure5.png}{Basic edges, using metrics}
+%
+%To apply \emph{Layouts} on the current \emph{nodes} the scripting
+%language uses the instruction \emph{applyLayout:}. \emph{Layouts}
+%define the methods (or metrics) that will be used to decide how
+%to display the elements.The application of a \emph{Layout} will 
+%affect every \emph{node}(\emph{edge}) defined before itself. \ab{I am not sure this example of colors is really interesting}
+%\begin{lstlisting}
+%| colors |
+%colors := (Color colorNames collect: 
+%	 [:each | Color fromString: (each asString)]). "colors as Colors"
+%view nodes: colors using: (KLCube new fillColor: #yourself).
+%view applyLayout: (KLCubeLayout new).
+%\end{lstlisting}
+%\fig{}{0.2}{figure6.png}{All Colors available in Pharo}
+% 
+%The special value system mentioned before is a way of sending
+%mesages to \emph{nodes} or \emph{edges} that will be evaluated
+%before drawing, and will mean something specific at that context:
+%keywords like \emph{yourself}, \emph{class}, \emph{subclass}, etc.
+%Who are mesages in Pharo, are interpreted by the graphic
+%elements (\emph{cubes} and \emph{lines}) to define values
+%coresponding to \emph{nodes} (\emph{edges}) information. 
+
 %=======
+
 \subsection{The third dimension} \seclabel{3d}
 
-\paragraph{Distinguish the depth}: 
+Klotz exploits the third visual dimension to immerse the user an immersion 
+
+\paragraph{Distinguish the depth}
 A visualization contains one unique light. 
 A colorless light is at the same position than the camera. 
 Maximum intensity when a face has orthogonal to the camera.
 
-\paragraph{Managing perspective}:
+\paragraph{Managing perspective}
 The perspective can be managed, and parametrized,
 in order to emphasize minor (or major) changes on the same
 \emph{model}. The easel provides commands to increase 
 (decrease) the perspective, where increasing the
 perspective means to enlarge the length of the edges on the
-third dimention. 
+third dimension. 
 
-\paragraph{Commands in the easel}: 
+\paragraph{Commands in the easel}
 In order to manage the position of the viewer the easel 
 contains 6 commands to rotate, it provides rotation on 
 every axis, on both directions. It includes commands
 to rotate around the X axis (up and down), around the
-Y axis (rotate left, rotate right) and aroun the Z axis
+Y axis (rotate left, rotate right) and around the Z axis
 (left and right). It also contains commands to manage
 the current zoom of the \emph{view} (Zoom in and Zoom out),
 an example panel with some script example of visualizations
@@ -410,7 +415,7 @@ perspective, understanding that managing perspective means
 changing the relative position of the viewer.  
    
 
-\paragraph{Layout}:
+\paragraph{Layout}
 The main objective of having a 3D engine is to have richer 
 \emph{layouts} capable of representing the same \emph{models} 
 that can be generated in 2D, but with the posibility of adding 
@@ -424,6 +429,7 @@ it calculates the nearest perfect cube (8,27,64,etc.), to the
 number of elements, and display the \emph{nodes}, cube root 
 of the result for each direction. if the element are less,
 it leaves the rest blank.
+
 \begin{lstlisting}
 view 
 	node: 1 using: (KLCube new width: 3; height: 5; depth: 2; yourself);
@@ -439,6 +445,7 @@ view applyLayout: (KLCubeLayout new).
 \emph{Sphere Layout}: It is a \emph{layout} that makes the display
 as the \emph{nodes} were at the surface of a Sphere,centered on the
 \emph{view} center. 
+
 \begin{lstlisting}
 	view nodes: Morph  subclasses.
 	view applyLayout: (KLSphereLayout new).
@@ -454,6 +461,7 @@ as a single entity. Each \emph{block} is diferenced by color and the
 chosen analysis for each \emph{block} is completely defined by the
 user. The \emph{blocks} are displayed in a way that the bigger one
 can be easily visualized.
+
 \begin{lstlisting}
 view applyLayout: (KLBlockLayout new
 	with: {view nodes: ((PackageInfo named: 'Klotz-Example') classes) 
