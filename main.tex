@@ -340,7 +340,7 @@ view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVar
 
 The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. \ab{@@pass until here}
 
-Similarly with nodes edges are defined in one of four ways. The method \ct{edge:from:to:} and \ct{edges:from:to:} use default black and thin line shape offered by the view. Consider (\figref{figure4.png}):
+Similarly with nodes edges are defined in one of four ways. The method \ct{edge:from:to:} and \ct{edges:from:to:} use default black and thin line shape offered by the view. \figref{figure4.png} shows the result of the script:
 
 \begin{lstlisting}
 view nodes: Magnitude subclasses.	
@@ -348,30 +348,33 @@ view edges: (Magnitude subclasses) from: #yourself to: MetacelloVersionNumber
 \end{lstlisting}
 \fig{h}{0.3}{figure4.png}{Basic edges}
 
-To apply \emph{Layouts} on the current \emph{nodes} the scripting
-language uses the instruction \emph{applyLayout:}. \emph{Layouts}
-define the methods (or metrics) that will be used to decide how
-to display the elements.The application of a \emph{Layout} will 
-affect every \emph{node}(\emph{edge}) defined before itself.
-\rj{color example removed :P, every "numbers" examples changed}
+
+% on the current \emph{nodes} the scripting
+%language uses the instruction \emph{applyLayout:}. \emph{Layouts}
+%define the methods (or metrics) that will be used to decide how
+%to display the elements.The application of a \emph{Layout} will 
+%affect every \emph{node}(\emph{edge}) defined before itself.
+%\rj{color example removed :P, every "numbers" examples changed}
  
-The special value system mentioned before is a way of sending
-mesages to \emph{nodes} or \emph{edges} that will be evaluated
-before drawing, and will mean something specific at that context:
-keywords like \emph{yourself}, \emph{class}, \emph{subclass}, etc.
-Who are mesages in Pharo, are interpreted by the graphic
-elements (\emph{cubes} and \emph{lines}) to define values
-coresponding to \emph{nodes} (\emph{edges}) information. 
+ The message \ct{edges:} \emph{domain} \ct{from:} \emph{fromSelectorOrBlock} \ct{to:} \emph{toSelectorOrBlock} constructs an edge for each element of the \emph{domain}. The source code is the result of evaluating \emph{fromSelectorOrBlock} on the considered  node and the target is obtained by evaluating  \emph{toSelectorOrBlock}. One-arg blocks and symbols are equally accepted.
+ 
+  
+%The special value system mentioned before is a way of sending
+%messages to \emph{nodes} or \emph{edges} that will be evaluated
+%before drawing, and will mean something specific at that context:
+%keywords like \emph{yourself}, \emph{class}, \emph{subclass}, etc.
+%Who are mesages in Pharo, are interpreted by the graphic
+%elements (\emph{cubes} and \emph{lines}) to define values
+%coresponding to \emph{nodes} (\emph{edges}) information. 
+
 %=======
 
 \subsection{The third dimension} \seclabel{3d}
 
-Klotz exploits the third visual dimension to immerse the user an immersion 
+Klotz offers a ``feeling of immersion'' by exploiting the third visual dimension. A number of tools is offered by either the visualization or the easel.
 
 \paragraph{Distinguish the depth}
-A visualization contains one unique light. 
-A colorless light is at the same position than the camera. 
-Maximum intensity when a face has orthogonal to the camera.
+A visualization contains one unique light, a white light located at the same position than the camera. The light intensity on a face is at its maximum when the face is orthogonal to the camera. When a surface of the face is close to be lined up with a light ray, the face is dark.
 
 \paragraph{Managing perspective}
 The perspective can be managed, and parametrized,
@@ -397,6 +400,9 @@ changing the relative position of the viewer.
    
 
 \paragraph{Layout}
+Nodes are ordering using a layout. If no layout is explicitly specified, nodes are horizontally lined up. The message \ct{applyLayout:} takes a layout object as parameter. Available layouts are described in the following section.
+
+
 The main objective of having a 3D engine is to have richer 
 \emph{layouts} capable of representing the same \emph{models} 
 that can be generated in 2D, but with the posibility of adding 
@@ -421,7 +427,7 @@ view
 	node: KLLayout.
 view applyLayout: (KLCubeLayout new). 
 \end{lstlisting}
-\fig{}{0.6}{figure7.png}{Cube Layout}
+\fig{}{0.6}{figure7.png}{Cube Layout\ab{Fix the picture}}
 
 \emph{Sphere Layout}: It is a \emph{layout} that makes the display
 as the \emph{nodes} were at the surface of a Sphere,centered on the
