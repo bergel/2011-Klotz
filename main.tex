@@ -424,16 +424,21 @@ it leaves the rest blank.
 \begin{lstlisting}
 view 
 	nodes: Magnitude withAllSubclasses 
-	using: (KLCube new width: #numberOfInstanceVariables).view applyLayout: (KLCubeLayout new). 
+	using: (KLCube new width: #numberOfInstanceVariables).
+view applyLayout: (KLCubeLayout new). 
 \end{lstlisting}
 \fig{}{0.3}{cubeLayout}{Cube Layout}
 
 \emph{Sphere Layout}: nodes are located on the surface of a sphere, centered on the center of the view. The following example places all the subclasses of \ct{Magnitude} on a sphere (\figref{sphereLayout}):
 
 \begin{lstlisting}
-view nodes: Magnitude subclasses. view applyLayout: KLSphereLayout new. view 
+view nodes: Magnitude subclasses. 
+view applyLayout: KLSphereLayout new. 
+
+view 
 	node: Magnitude 
-	using: (KLCube new fillColor: Color green). view 
+	using: (KLCube new fillColor: Color green). 
+view 
 	edges: Magnitude subclasses 
 	from: #yourself 
 	to: #superclass.
@@ -449,10 +454,16 @@ user. The \emph{blocks} are displayed in a way that the bigger one
 can be easily visualized.
 
 \begin{lstlisting}
-| shape packages block |shape := KLCube new height: #numberOfInstanceVariables.packages := 
+| shape packages block |
+shape := KLCube new height: #numberOfInstanceVariables.
+packages := 
 	PackageInfo allPackages 
-		select: [:pak | pak packageName matches: 'Klotz-*'].block := KLBlockLayout new.packages do: [ :pak | 
-	block with: {view nodes: pak classes using: shape } ].view applyLayout: block
+		select: [:pak | pak packageName matches: 'Klotz-*'].
+
+block := KLBlockLayout new.
+packages do: [ :pak | 
+	block with: {view nodes: pak classes using: shape } ].
+view applyLayout: block
 	\end{lstlisting}
 \fig{}{0.4}{figure9.png}{Block Layout}
 
