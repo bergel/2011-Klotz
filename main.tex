@@ -445,13 +445,17 @@ view
 \end{lstlisting}
 \fig{}{0.4}{sphereLayout}{Sphere Layout}
 
-\emph{Block Layout}: It is a \emph{layout} that can be used to 
-analyze diferences between packages. It works with the concept
-of \emph{blocks} wich are the representation of related \emph{nodes}
-as a single entity. Each \emph{block} is diferenced by color and the
-chosen analysis for each \emph{block} is completely defined by the
-user. The \emph{blocks} are displayed in a way that the bigger one
-can be easily visualized.
+\emph{Block Layout}: nodes are hierarchically grouped and organized around a surface. Each group is uniquely colored. The assigned color is random is none is specified in the shape.
+
+%It is a \emph{layout} that can be used to 
+%analyze diferences between packages. It works with the concept
+%of \emph{blocks} wich are the representation of related \emph{nodes}
+%as a single entity. Each \emph{block} is diferenced by color and the
+%chosen analysis for each \emph{block} is completely defined by the
+%user. The \emph{blocks} are displayed in a way that the bigger one
+%can be easily visualized.
+
+The following script visualize the structure of Klotz (\figref{figure9.png}): 
 
 \begin{lstlisting}
 | shape packages block |
@@ -467,137 +471,158 @@ view applyLayout: block
 	\end{lstlisting}
 \fig{}{0.4}{figure9.png}{Block Layout}
 
+The script gives a randomly chosen color to each package of Klotz. The color is used to paint the classes of each package. Each node is a colored class. The height represents the number of attributes. 
+
+\emph{Scatterplot layout}: nodes may be located on a three dimensional Cartesian. Each node has a 3d coordinate that is determined from applying three metric on the represented model. The following script plots each class of the Klotz-Kernel package along its number of attributes, number of methods (\figref{scatterplotLayout}):
+
+\begin{lstlisting}
+view nodes: 
+	((PackageInfo named:'Klotz-Kernel') classes).
+
+view applyLayout: 
+(KLScatterCubeLayout new
+    <i>"blue line"</i>
+    x: [:cls | cls numberOfLinesOfCode / 1000]; 
+    y: #numberOfInstanceVariables; <i>"red line"</i>
+    z: #numberOfMethods) <i>"green line"</i>
+\end{lstlisting}
+
+\fig{h}{0.4}{scatterplotLayout}{The Klotz Kernel Package}
+
+%This visualization show some tendencies (figure 11):
+%most classes in the package are quite simple and similar,
+%with few attributes and instance variables (low x and y), and 
+%also most of those with lots of attributes and instance variables
+%are also those with lots of methods, high depth (high z). Knowing
+%this tendencies its easy to tell which classes hold great 
+%responsibility on the system.
+
 %=======
-\subsection{Properties} \seclabel{properties}
-
-\begin{itemize}
-\item \emph{The visualization engine should be domain independent.}
-Since a visualization software must represent abstract \emph{models}
-the engine itself must have a system to generate \emph{abstract analisys},
-analisys of features that are not yet evaluated when are defined, 
-for any kind of (numerable) property that could be needed. This way
-the \emph{model} will only define the values to be represented, not
-the way they will be displayed.
-
-\item \emph{Visualizations should be easily composed from simpler parts.}
-Every visualization needs to be varible, there is no use in  defining
-any posible visualization, so it must be a composition of simple elements,
-that can be manage to achieve the display defined on the visualization kind.
-Representing kinds of visualizations as \emph{layouts}, elements as \emph{nodes},
-and relations as \emph{edges} is a easy to understand way of composing a
-vizualization.
- 
-\item \emph{The visualization should be definable at a fine grained level.}
-As mentioned before, representing visualizations as \emph{layouts}, elements as 
-\emph{nodes}, and relations as \emph{edges} gives the posibility to 
-manage every aspect of a visualization on its definition. Every wanted
-property to be display can be include on the definition of the \emph{nodes},
-any relation needed can be manage with \emph{edges} and for the actual display
-there are the \emph{layouts}.
-
-\item \emph{The visualization description should be declarative.}
-In order to represent the required visualization, without having to 
-actually learn the base lenguage code, the scripting lenguage itself
-must express the logic of the computation without describing the control 
-flow. Smalltalk is a lenguage that follows this paradigm, but this is
-hardly enougth to make the script easy to follow. The actual computation
-behind the system is controlled by the instructions \emph{node:/nodes:}, 
-\emph{edge:/edges:} and \emph{applyLayout:}. Most times, the visualization
-need more than just this instructions, it needs to control the \emph{shape}
-of both \emph{nodes} and \emph{edges}, with the instruction \emph{using:}. 
-For the \emph{layouts}, every \emph{layout} contains its own structure to 
-define its parameters.   
-\end{itemize}
+%\subsection{Properties} \seclabel{properties}
+%
+%\begin{itemize}
+%\item \emph{The visualization engine should be domain independent.}
+%Visualization is a mean to abstract models by compressing a detailed model into a set of visual patterns. The visualization engine we built visualizes any arbitrary domain. According to the experience gained with Mondrian, this is a highly relevant characteristic.
+%
+%%the engine itself must have a system to generate \emph{abstract analisys},
+%%analisys of features that are not yet evaluated when are defined, 
+%%for any kind of (numerable) property that could be needed. This way
+%%the \emph{model} will only define the values to be represented, not
+%%the way they will be displayed.
+%
+%%\item \emph{Visualizations should be easily composed from simpler parts.}
+%%Every visualization needs to be varible, there is no use in  defining
+%%any posible visualization, so it must be a composition of simple elements,
+%%that can be manage to achieve the display defined on the visualization kind.
+%%Representing kinds of visualizations as \emph{layouts}, elements as \emph{nodes},
+%%and relations as \emph{edges} is a easy to understand way of composing a
+%%vizualization.
+% 
+%\item \emph{The visualization should be definable at a fine grained level.}
+%As mentioned before, representing visualizations as \emph{layouts}, elements as 
+%\emph{nodes}, and relations as \emph{edges} gives the posibility to 
+%manage every aspect of a visualization on its definition. Every wanted
+%property to be display can be part the definition of the \emph{nodes},
+%any relation needed can be manage with \emph{edges} and for the actual display
+%there are the \emph{layouts}.
+%
+%\item \emph{The visualization description should be declarative.}
+%In order to represent the required visualization, without having to 
+%actually learn the base lenguage code, the scripting lenguage itself
+%must express the logic of the computation without describing the control 
+%flow. Smalltalk is a lenguage that follows this paradigm, but this is
+%hardly enougth to make the script easy to follow. The actual computation
+%behind the system is controlled by the instructions \emph{node:/nodes:}, 
+%\emph{edge:/edges:} and \emph{applyLayout:}. Most times, the visualization
+%need more than just this instructions, it needs to control the \emph{shape}
+%of both \emph{nodes} and \emph{edges}, with the instruction \emph{using:}. 
+%For the \emph{layouts}, every \emph{layout} contains its own structure to 
+%define its parameters.   
+%\end{itemize}
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Applications} \seclabel{applications}
-
-%=======
-\subsection{Codecity}
-A first application that come in handy, using the \emph{Block Layout},
-is to "build" a codecity, to represent the code of an entire program
-in a single visualization. To achieve a visualization that actually 
-displays a program, in a system where the visualization are not focus
-on that matter, the definition of the visualization must know contain
-some of its information.
-
-The following code displays, the most usefull to mesure, properties of 
-2 packages of the \emph{Compiler} system of Pharo:
-\begin{lstlisting}
-view applyLayout: (KLBlockLayout new
-	with: {view nodes: ((PackageInfo named:'Compiler-ParseNodes') classes) 
-		using: (KLCube new width: #numberOfMethods; 
-							height: #numberOfInstanceVariables; 
-							depth:#numberOfMethods;
-							fillColor: Color lightBlue;
-							 yourself)};
-	with: {view nodes: ((PackageInfo named: 'Compiler-Kernel') classes)
-		using: (KLCube new width: #numberOfMethods; 
-							height: #numberOfInstanceVariables; 
-							depth:#numberOfMethods;
-							fillColor: Color blue;
-							yourself)})
-\end{lstlisting}
-
-\fig{}{0.55}{figure10.png}{Compiler Kernel and ParseNodes}
-
-This kind visualization expresses useful information when looking for
-smelly code or wanting to do some refactoring. The code before give 3 
-conclutions, among others, that come directly from figure 10:
-every class of these 2 packages are highly functional, they are not
-meant to actually represent a structure with lots of variables, which
-is consistent with their real purpose. The \emph{ParseNodes} package
-functionalities are concentrated on 3 classes (B in the figure), 
-again consist with already known information (\emph{ParseNode}, 
-\emph{BlockNode} and \emph{MessageNode} classes). Also the {Kernel} 
-package contain clases with no instance variables at all (A in the figure),
-wich is also consistent with verifiable information (every subclass of 
-\emph{BytecodeEncoder} have no instance variables. 
-
-
-%=======
-\subsection{Scatterplot}
-Tipically, to represent code properties directly as the dimentions
-of the \emph{nodes} is not necesarily the best way to compare 
-them, sometimes is usefull enought to compare such measures to 
-just contrast the values themselves. Using a scatter plot, 
-a type of mathematical diagram that use Cartesian coordinates to 
-display values for 2 (or 3 on our 3D \emph{model}) variables for 
-a set of data, the \emph{nodes} just represent the entity itself, 
-and the properties are  parametrized with the \emph{node} position.
-
-Using the \emph{Scatter Cube Layout}, 3D scatter plot can be defined
-in a simple intruction. The following code presents an analisys of
-the \emph{Klotz-Kernel} package:
-
-\begin{lstlisting}
-view nodes: ((PackageInfo named:'Klotz-Kernel') classes).
-view applyLayout: 
-(KLScatterCubeLayout 
-	new x: #numberOfAttributes; "the blue line"
-		y: #numberOfInstanceVariables; "the red line"
-		z: #numberOfMethods) "the, not visible here, green line" 
-\end{lstlisting}
-
-\fig{}{0.4}{figure11.png}{The Klotz Kernel Package}
-
-This visualization show some tendencies (figure 11):
-most classes in the package are quite simple and similar,
-with few attributes and instance variables (low x and y), and 
-also most of those with lots of attributes and instance variables
-are also those with lots of methods, high depth (high z). Knowing
-this tendencies its easy to tell which classes hold great 
-responsibility on the system.
-
+%\section{Applications} \seclabel{applications}
+%
+%%=======
+%\subsection{Codecity}
+%A natural application of the block layout is to visualize software as an interactive city. Consider the representation of two packages of the Pharo compiler, the parse nodes and the kernel (\figref{figure10.png}):
+%
+%\begin{lstlisting}
+%view applyLayout: (KLBlockLayout new
+%	with: {view nodes: ((PackageInfo named:'Compiler-ParseNodes') classes) 
+%		using: (KLCube new width: #numberOfMethods; 
+%							height: #numberOfInstanceVariables; 
+%							depth:#numberOfMethods;
+%							fillColor: Color lightBlue;
+%							 yourself)};
+%	with: {view nodes: ((PackageInfo named: 'Compiler-Kernel') classes)
+%		using: (KLCube new width: #numberOfMethods; 
+%							height: #numberOfInstanceVariables; 
+%							depth:#numberOfMethods;
+%							fillColor: Color blue;
+%							yourself)})
+%\end{lstlisting}
+%
+%\fig{}{0.55}{figure10.png}{Compiler Kernel and ParseNodes}
+%
+%This codecity-like visualization is useful when looking for smelly code or opportunities for code refactoring.
+%
+%This kind visualization expresses useful information when looking for
+%smelly code or wanting to do some refactoring. The code before give 3 
+%conclutions, among others, that come directly from figure 10:
+%every class of these 2 packages are highly functional, they are not
+%meant to actually represent a structure with lots of variables, which
+%is consistent with their real purpose. The \emph{ParseNodes} package
+%functionalities are concentrated on 3 classes (B in the figure), 
+%again consist with already known information (\emph{ParseNode}, 
+%\emph{BlockNode} and \emph{MessageNode} classes). Also the {Kernel} 
+%package contain clases with no instance variables at all (A in the figure),
+%wich is also consistent with verifiable information (every subclass of 
+%\emph{BytecodeEncoder} have no instance variables. 
+%
+%
+%%=======
+%\subsection{Scatterplot}
+%Tipically, to represent code properties directly as the dimentions
+%of the \emph{nodes} is not necesarily the best way to compare 
+%them, sometimes is usefull enought to compare such measures to 
+%just contrast the values themselves. Using a scatter plot, 
+%a type of mathematical diagram that use Cartesian coordinates to 
+%display values for 2 (or 3 on our 3D \emph{model}) variables for 
+%a set of data, the \emph{nodes} just represent the entity itself, 
+%and the properties are  parametrized with the \emph{node} position.
+%
+%Using the \emph{Scatter Cube Layout}, 3D scatter plot can be defined
+%in a simple intruction. The following code presents an analisys of
+%the \emph{Klotz-Kernel} package:
+%
+%\begin{lstlisting}
+%view nodes: 
+%	((PackageInfo named:'Klotz-Kernel') classes).
+%
+%view applyLayout: 
+%(KLScatterCubeLayout new
+%    x: #numberOfAttributes; <i>"blue line"</i>
+%    y: #numberOfInstanceVariables; <i>"red line"</i>
+%    z: #numberOfMethods) <i>"green line"</i>
+%\end{lstlisting}
+%
+%\fig{}{0.4}{figure11.png}{The Klotz Kernel Package}
+%
+%This visualization show some tendencies (figure 11):
+%most classes in the package are quite simple and similar,
+%with few attributes and instance variables (low x and y), and 
+%also most of those with lots of attributes and instance variables
+%are also those with lots of methods, high depth (high z). Knowing
+%this tendencies its easy to tell which classes hold great 
+%responsibility on the system.
+%
 
 
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implementation} \seclabel{implementation}
-
-%=======
-
-\subsection{Performance}
+\ab{need to do a pass on this}
 The current version of \emph{Klotz}, yet not optimized, provides
 support up to 10000 \emph{nodes} on screen, as well as, 
 10000 \emph{edges} between these \emph{nodes}.
@@ -626,21 +651,21 @@ if there is, its not common) \emph{Klotz} keeps this specification.
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion} \seclabel{discussion}
 
-The Klotz graphic generation solely uses Morph facilities. The most common approach to visualize 3d graphics is to use OpenGL, a standard in the field. We deliberately decided to not use OpenGL for a number of practical reasons:
+The Klotz graphic generation solely uses Morph facilities. The most common approach to visualize 3d graphics is to use OpenGL, a reference in the field. We deliberately decided to not use OpenGL for a number of practical reasons:
 
 \begin{itemize}
-\item OpenGL is distributed as a set of natives libraries, depending on the operating system. Libraries are accessed from FFI or Alien, two technologies that interoperate with native libraries. Unfortunately, the recent advances with the Pharo virtual machine, external libraries are not easily accessible within Pharo. 
+\item OpenGL is distributed as a set of natives libraries, depending on the operating system. Libraries are accessed within Pharo using FFI or Alien, two technologies that interoperate with native libraries. Unfortunately, the recent advances with the Pharo virtual machine significantly reduced the usability of accessing external libraries.
 
 \item The visualizations produced with Mondrian rarely go over 2,000 nodes and 1,000 edges. It is reasonable to expect similar figure as the upper limit for Klotz. OpenGL enables sophisticated rendering, including a high number of rendered polygons and advanced light composition. We do not expect to have such a need in a close future.
 \end{itemize}
 
-Basing Klotz on OpenGL is clearly on our agenda. Alien needs to gain stability, especially with the Pharo JIT virtual machine (Cog).
+Basing Klotz on OpenGL is clearly on our agenda. For this, Alien needs to gain stability, especially with the Pharo JIT virtual machine (Cog).
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \seclabel{relatedwork}
-
-\subsection{Lumiere~\cite{Oliv09a}}
-Lumiere is a 3D Framework,that applies a stage metaphor.
+\ab{need to go over this}
+\subsection{Lumiere}
+Lumiere~\cite{Oliv09a} is a 3D Framework,that applies a stage metaphor.
 This metaphor implies that all graphics are produced by cameras
 taking pictures of 3D shapes lit by the lights of the stage. A
 stage provides the setting for taking pictures of a composition 
@@ -648,16 +673,16 @@ of visual objects we call micro-worlds. Lumiere's objective
 is to implement a 3D graphical support to Pharo programmers, at
 a high level of abstraction. This Framework uses OpenGL libraries
 designed for Pharo. As mentioned before, this libraries are 
-entirely dependant of the OS and the right native OpenGL packages
-withing the machine itself, to be used.
+entirely dependent of the OS and the right native OpenGL packages
+within the machine itself, to be used.
 
 On the other hand, Klotz do not represent a competitor on that 
-matter, Klotz is a 3D code vizualizacion engine, its goal is
+matter, Klotz is a 3D code visualization engine, its goal is
 not focus on the actual quality of the graphic interface, but 
-on the expresiveness of the representation in orden to achieve
-a better comprension of the code. Right now Klotz graphical
+on the expressiveness of the representation in order to achieve
+a better comprehension of the code. Right now Klotz graphical
 interface is a small engine that is completely based on the Morph
-engine, wich seems suficient for it  purposes. This does not
+engine, which seems sufficient for it  purposes. This does not
 mean to be the final core, eventually the system will need an
 external graphic engine, probably based on OpenGL, and that can
 also be Lumiere itself, but since the goal its not the actual
@@ -665,12 +690,12 @@ graphics of Klotz (and the engines take to much effort on just
 configuration, external to the Klotz interface), this matter
 remains pending.
 
-\subsection{CodeCity~\cite{Wett08d}}\rj{ just changed this}
-CodeCity is a full fledged city metaphor environment, for code
+\subsection{CodeCity}
+CodeCity~\cite{Wett08d} is a full fledged city metaphor environment, for code
 analisys. Its Visualization is based on this metaphor, and its
 metrics are entirely defined (and chosen carefully) to faithfully
 explain software code. This concrete approach intends to focus
-not only on the visualization itself, but in the analysis of sofware
+not only on the visualization itself, but in the analysis of software
 evolution. It also support  reverse engineering.
 
 CodeCity is programmed in VisualWorks Smalltalk on top of the Moose 
@@ -679,17 +704,27 @@ platform, just like Lumiere, it uses OpenGL for rendering.
 when it comes to Klotz, not been as powerful as Codecity, eventually, 
 and depending on the programer's skills, it can implement every static 
 aspect of its model. The same metrics defined on it to represent code 
-can be applied to a yet customable enviroment, with a simple Pharo image. 
+can be applied to a yet customizable environment, with a simple Pharo image. 
 This can be very complex and carry lots of trouble that CodeCity has 
 already fixed (probably). But as said before, the main idea is not to 
 create a city metaphor model, but to have a meta-model creation system, 
-meant to easily display many diferent aspects of a code analysis on the 
-same framework and with a scripting lenguage, designed to be easy to manage.
+meant to easily display many different aspects of a code analysis on the 
+same framework and with a scripting language, designed to be easy to manage.
 
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \seclabel{conclusion}
 
+Klotz is an agile three-dimensional visualization engine. Klotz visualizes a graph of objects, without any preparation of the objects.
+
+\ab{Say what you want to do}
+As future work, we plan to:
+\begin{itemize}
+\item wish 1
+\item wish 2
+\item wish 3
+\item wish 4
+\end{itemize}
 
 \paragraph{Acknowledgment} 
 We thank Patricio Plaza for his effort and participation on an early version of Klotz.
