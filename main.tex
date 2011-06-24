@@ -621,11 +621,10 @@ view applyLayout:
 
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Implementation} \seclabel{implementation}
-\ab{need to do a pass on this}
+\section{Implementation} \seclabel{implementation}	
 The current version of \emph{Klotz}, yet not optimized, provides
-support up to 10000 \emph{nodes} on screen, as well as, 
-10000 \emph{edges} between these \emph{nodes}.
+support up to 1000 \emph{nodes} on screen, as well as, 
+1000 \emph{edges} between these \emph{nodes}.
 
 \fig{}{0.5}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
 
@@ -716,14 +715,12 @@ same framework and with a scripting language, designed to be easy to manage.
 \section{Conclusion} \seclabel{conclusion}
 
 Klotz is an agile three-dimensional visualization engine. Klotz visualizes a graph of objects, without any preparation of the objects.
-
-\ab{Say what you want to do}
 As future work, we plan to:
 \begin{itemize}
-\item wish 1
-\item wish 2
-\item wish 3
-\item wish 4
+\item Implement drag-and-drop support to manage the nodes easily.
+\item Add an interface to see the information within the node on mouse focus, and change it dynamically.
+\item Optimize and improve the graphical libraries, if possible, change to a stable, OpenGL based library, because most of them are not even functional right now. 
+\item Add lots of new Layouts, and with time, other figures to use as nodes. 
 \end{itemize}
 
 \paragraph{Acknowledgment} 
