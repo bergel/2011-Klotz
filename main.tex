@@ -210,12 +210,12 @@ Pleiad Lab, Department of Computer Science (DCC),\\ University of Chile, Santiag
 %\end{center}
 
 \begin{abstract}
-Klotz is a visualization engine that graphically represents in 3 dimensions. Visualizations are produced from an arbitrary model, typically a set of plain objects and connections between them. No preparation of the model is required to be rendered.
+Klotz is an agile 3d visualization engine. Visualizations are produced from an arbitrary model, typically a set of plain objects and connections. No preparation of the model is required to be rendered.
 Klotz uses a semi-descriptive scripting language to easily and interactively build visualizations. 
 
-Klotz offers two dedicated layouts to easily exploit the third dimension to visualize data. The block layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
+Klotz offers four layouts to easily exploit the third dimension when visualizing data. %The block layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
 
-Klotz is entirely implemented in Pharo. The engine is fully based on the facilities offered by Morph.
+Klotz is entirely implemented in Pharo. The engine is fully based on the facilities offered by Morph. 
 % What is the problem
 % Why is the problem a problem?
 % What's the surprising Idea?
@@ -242,15 +242,14 @@ Klotz is entirely implemented in Pharo. The engine is fully based on the facilit
 
 Visual displays allow the human brain to study multiple aspects of complex problems in parallel. Visualization, ``allows for a higher level of abstract, a closer mapping to the problem domain''~\cite{Petr95a}. 
 
-Numerous frameworks have been offered by the Smalltalk community to visualize data. Mondrian\footnote{\url{http://www.moosetechnology.org/seaside/pier/tools/mondrian}}~\cite{Meye06a} is a flexible and agile visualization engine that uses two dimensional representation to visualize data.  
+Numerous frameworks have been offered by the Smalltalk community to visualize data. Mondrian\footnote{\url{http://www.moosetechnology.org/seaside/pier/tools/mondrian}}~\cite{Meye06a}, one of them, is a flexible and agile visualization engine that uses two dimensional representation to visualize data.  
 
-We built on the experienced we gained with Mondrian by proposing a new visualization engine that add a third dimension to the graphical representation. Klotz takes a new rendering engine to the main features of Mondrian, namely the scripting language and the interactive easel.
+We are building on the experience we gained with Mondrian by proposing a new visualization engine that adds a third dimension to the graphical representation. Klotz applies the main features of Mondrian, namely the scripting language and the interactive easel, to a new rendering engine.
 
-Contrary to other Smalltalk 3D visualization engines (Lumi\`ere\cite{Oliv09a}, Jun\footnote{\url{http://aokilab.kyoto-su.ac.jp/jun/index.html}}), Klotz does not rely on OpenGL or any external libraries. The generation of 3D graphics is solely based on Morph facilities. 
+Contrary to other Smalltalk 3D visualization engines (Lumi\`ere\cite{Oliv09a}, Jun\footnote{\url{http://aokilab.kyoto-su.ac.jp/jun/index.html}}), Klotz does not rely on OpenGL or any external libraries. The generation of 3D graphics is solely based on Morph facilities. The benefits are numerous, including ease of installation and multi-platform support.
 
 The paper is structured as follows:
-\secref{klotz} presents the essential characteristics of Klotz. It progressively presents Klotz' features illustrated by short and concise scripts. 
-\secref{applications} gives two layouts offered by Klotz.
+\secref{klotz} presents the essential characteristics of Klotz. It progressively presents Klotz' features by giving short and concise illustrative scripts. 
 \secref{implementation} briefly describes the main points of Klotz implementation and gives some benchmarks.
 \secref{conclusion} concludes.
 
@@ -273,19 +272,19 @@ Klotz' objective is to offer a flexible and agile tool to visualize any arbitrar
 | subclasses |
 subclasses := KLEaselCommand subclasses.
 view nodes: subclasses.
-view applyLayout:  (KLSphereLayout new).
+view applyLayout: KLSphereLayout new.
 
 view node: KLEaselCommand using: (KLCube new fillColor: Color green).
 view edges: subclasses from: #yourself to: #superclass.   
 \end{lstlisting}
 
-Line 1 defines a temporary variable \ct{models}. 
+Line 1 defines a temporary variable \ct{subclasses}. 
 The variable is initialized in Line 2 with the all the subclasses of the class \ct{KLEaselCommand}.
-Line 3 adds the objects referenced by \ct{models} into the view. Each of the subclass of \ct{KLEaselCommand} is represented by a cube.
-Line 4 orders the cube along a sphere layout.
+Line 3 adds the objects referenced by \ct{subclasses} into the view. Each of the subclass of \ct{KLEaselCommand} is represented by a cube.
+Line 4 positions each cube on an invisible sphere.
 
-Line 6 adds a new node, \ct{KLEaselCommand} the root of the class hierarchy. The node is colored in green.
-Line 7 adds as many edges there is elements in the variable \ct{models}. For each subclass, an edge is drawn from the subclass to its superclass, \ct{KLEaselCommand}. The result is depicted in \figref{figure1.png}.
+Line 6 adds a new node, \ct{KLEaselCommand}, the root of the class hierarchy. The node is colored in green.
+Line 7 adds as many edges there are elements in the variable \ct{subclasses}. For each subclass, an edge is drawn from the subclass to its superclass, \ct{KLEaselCommand}. The result is depicted in \figref{figure1.png}.
 
 \fig{h}{0.4}{figure1.png}{KLEaselCommand subclasses.}
 
@@ -301,8 +300,8 @@ Agility of Klotz is expressed via an easel to interactively ``compose'' a visual
 The Klotz scripting language is plain Pharo code. Each script is based on 4 principles:
 
 \begin{itemize}
-\item elements composing the visualization are represented as \emph{nodes}. Each node may have a shape and color that reflects some characteristics of the represented node.
-\item relations between elements are represented with \emph{edges}. The color and width of a shape depends on some characteristics of the edge.
+\item elements composing the visualization are represented as \emph{nodes}. Each node may have a shape and color that reflect some characteristics of the represented node.
+\item relations between elements are represented with \emph{edges}. The color and width of a shape depend on some arbitrary characteristics of connected objects.
 \item elements may be ordered using \emph{layouts}. A layout may use edges to direct the ordering.
 \item containment is expressed with a \emph{view}, an object that enables the construction of the visualization by offering numerous methods.%\ab{Is there more to say?}
 \end{itemize}
@@ -316,7 +315,7 @@ The Klotz scripting language is plain Pharo code. Each script is based on 4 prin
 %the object being modeled (iv).  
 
 The scripting language supports 4 different ways of defining nodes. 
-The messages \ct{node:} create an individual node using the default visual properties (colored in blue, thin black border line). A variant of it is \ct{nodes:} to add multiple nodes in one single instruction. The script 
+The message \ct{node:} creates an individual node using some default visual properties (colored in blue, thin black border line). A variant of it is \ct{nodes:} to add multiple nodes in one single instruction. The script 
 
 \begin{lstlisting}
 view node: Magnitude.
@@ -332,9 +331,9 @@ view nodes: { Magnitude. Number . Time}
 
 The result is shown in \figref{figure2.png}.
 
-\fig{h}{0.2}{figure2.png}{Magnitude class and 2 of its subclasses.}
+\fig{h!}{0.2}{figure2.png}{\ct{Magnitude}, \ct{Number} and \ct{Time}.}
 
-The visual representation may be particularized for the provided nodes. The message \ct{node:using:} and \ct{nodes:using:} allow graphical cube to be customized with metrics computed on the represented model. Consider the example, depicted in \figref{figure3.png}:
+The visual representation may be particularized according to some characteristics of the provided nodes. The message \ct{node:using:} and \ct{nodes:using:} allow graphical cube to be customized with metrics computed on the represented model. Consider the example, depicted in \figref{figure3.png}:
 
 \begin{lstlisting}
 view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVariables)    
@@ -342,9 +341,10 @@ view nodes: Magnitude subclasses using: (KLCube new height: #numberOfInstanceVar
 
 \fig{h}{0.3}{figure3.png}{Magnitude subclasses, the heights shows the number of instance variables.}
 
-The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. 
+The message \ct{numberOfInstanceVariables} is sent to each of \ct{Magnitude}'s subclasses. The result of \texttt{number\-Of\-Instance\-Variables} defines the height of the node.
 
-Similarly with nodes edges are defined in one of four ways. The method \ct{edge:from:to:} and \ct{edges:from:to:} use default black and thin line shape offered by the view. \figref{figure4.png} shows the result of the script:
+%Similarly with nodes edges are defined in one of four ways. 
+The methods \ct{edge:from:to:} and \ct{edges:from:to:} use default black and thin line shape offered by the view. \figref{figure4.png} shows the result of the script:
 
 \begin{lstlisting}
 view nodes: Magnitude subclasses.	
@@ -412,14 +412,14 @@ A user look at a visualization through the view camera. The easel offers six com
 %   
 
 \paragraph{Layout}
-Nodes are ordered using a layout. The default layout that is used when no other is specified is the horizontal line layout. A layout is specified using the message \ct{applyLayout:}. Three layouts are available currently: cube layout, sphere layout and block layout.
+Nodes are ordered using a layout. The default layout that is used when no other is specified is the horizontal line layout. A layout is specified using the message \ct{applyLayout:}. Four additional layouts are available: cube layout, sphere layout, block layout, and scatterplot layout.
 
-\emph{Cube Layout}: This \emph{layout} orders the nodes as a``cube'', meaning that each edges \ab{Something strange here. Why the visualization has two rows of node?}
+\emph{Cube Layout}: This \emph{layout} orders the nodes in a three-dimensional cube.
 
-it calculates the nearest perfect cube (8,27,64,etc.), to the
-number of elements, and display the \emph{nodes}, cube root 
-of the result for each direction. if the element are less,
-it leaves the rest blank.
+%it calculates the nearest perfect cube (8,27,64,etc.), to the
+%number of elements, and display the \emph{nodes}, cube root 
+%of the result for each direction. if the element are less,
+%it leaves the rest blank.
 
 \begin{lstlisting}
 view 
@@ -445,7 +445,7 @@ view
 \end{lstlisting}
 \fig{}{0.4}{sphereLayout}{Sphere Layout}
 
-\emph{Block Layout}: nodes are hierarchically grouped and organized around a surface. Each group is uniquely colored. The assigned color is random is none is specified in the shape.
+\emph{Block Layout}: nodes are hierarchically grouped and organized on a surface. Each group is uniquely colored. The assigned color is randomly chosen if none is specified in the shape.
 
 %It is a \emph{layout} that can be used to 
 %analyze diferences between packages. It works with the concept
@@ -455,11 +455,12 @@ view
 %user. The \emph{blocks} are displayed in a way that the bigger one
 %can be easily visualized.
 
-The following script visualize the structure of Klotz (\figref{figure9.png}): 
-
+The following script visualizes the structure of Klotz (\figref{figure9.png}): 
+\newpage
 \begin{lstlisting}
 | shape packages block |
-shape := KLCube new height: #numberOfInstanceVariables.
+shape := KLCube new 
+				height: #numberOfInstanceVariables.
 packages := 
 	PackageInfo allPackages 
 		select: [:pak | pak packageName matches: 'Klotz-*'].
@@ -628,27 +629,12 @@ support up to 1000 \emph{nodes} on screen, as well as,
 
 \fig{}{0.5}{graph1}{Benchmark (quantity vs time[ms]) for few \emph{nodes}/\emph{edges}} 
 
-As shown in figure 12, the \emph{Easel} provides the expected results
-almost in linear proportion with the quantity of \emph{nodes}, 
-wich is a great result, for a graphical interface. It also shown 
-not major difference between the computation of different kinds 
-of \emph{Layouts}, even those using \emph{edges}. This result seem 
-to be perfect, but thats only because the quantity is still not 
-demanding for the system. Note that on both figures the \emph{Layout} 
-with \emph{edges} have as much \emph{edges} as \emph{nodes}.  
+As shown in \figref{graph1}, the time taken for the easel to render a scene with the default horizontal line layout is almost proportional with the quantity of nodes and edges. %It also shown not major difference between the computation of different kinds of \emph{Layouts}, even those using \emph{edges}. 
 
 \fig{}{0.5}{graph2}{Benchmark (quantity vs time[ms]) for lots of \emph{nodes}/\emph{edges}}
 
-On figure 13, as mentioned before, the tendency to go in almost 
-linear proportion is still there, for displaying \emph{Layouts} 
-with just \emph{nodes}, but when it comes to add \emph{edges}
-the proportion happens to be exponential, which is far from
-a good system, but since there is no real need to actually 
-display 1000 \emph{nodes} with 1000 \emph{edges} between them (and
-if there is, its not common) \emph{Klotz} keeps this specification. 
+On \figref{graph2} illustrates the linear resource taken by the layouts.
 
-%:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discussion} \seclabel{discussion}
 
 The Klotz graphic generation solely uses Morph facilities. The most common approach to visualize 3d graphics is to use OpenGL, a reference in the field. We deliberately decided to not use OpenGL for a number of practical reasons:
 
@@ -670,8 +656,7 @@ taking pictures of 3D shapes lit by the lights of the stage. A
 stage provides the setting for taking pictures of a composition 
 of visual objects we call micro-worlds. Lumiere's objective
 is to implement a 3D graphical support to Pharo programmers, at
-a high level of abstraction. This Framework uses OpenGL libraries
-designed for Pharo. As mentioned before, this libraries are 
+a high level of abstraction. This framework uses OpenGL. As mentioned before, this libraries are 
 entirely dependent of the OS and the right native OpenGL packages
 within the machine itself, to be used.
 
@@ -681,17 +666,14 @@ not focus on the actual quality of the graphic interface, but
 on the expressiveness of the representation in order to achieve
 a better comprehension of the code. Right now Klotz graphical
 interface is a small engine that is completely based on the Morph
-engine, which seems sufficient for it  purposes. This does not
+engine. This does not
 mean to be the final core, eventually the system will need an
 external graphic engine, probably based on OpenGL, and that can
-also be Lumiere itself, but since the goal its not the actual
-graphics of Klotz (and the engines take to much effort on just
-configuration, external to the Klotz interface), this matter
-remains pending.
+also be Lumiere itself.
 
 \subsection{CodeCity}
 CodeCity~\cite{Wett08d} is a full fledged city metaphor environment, for code
-analisys. Its Visualization is based on this metaphor, and its
+analisys. Its visualization is based on this metaphor, and its
 metrics are entirely defined (and chosen carefully) to faithfully
 explain software code. This concrete approach intends to focus
 not only on the visualization itself, but in the analysis of software
@@ -700,27 +682,25 @@ evolution. It also support  reverse engineering.
 CodeCity is programmed in VisualWorks Smalltalk on top of the Moose 
 platform, just like Lumiere, it uses OpenGL for rendering.
 
-when it comes to Klotz, not been as powerful as Codecity, eventually, 
-and depending on the programer's skills, it can implement every static 
-aspect of its model. The same metrics defined on it to represent code 
-can be applied to a yet customizable environment, with a simple Pharo image. 
-This can be very complex and carry lots of trouble that CodeCity has 
-already fixed (probably). But as said before, the main idea is not to 
-create a city metaphor model, but to have a meta-model creation system, 
-meant to easily display many different aspects of a code analysis on the 
-same framework and with a scripting language, designed to be easy to manage.
+When it comes to Klotz, not been as expressive as Codecity, eventually, 
+and depending on the programer's skills, it can implement most  
+aspect of its model. 
+%The same metrics defined on it to represent code can be applied to a yet customizable environment, with a simple Pharo image. This can be very complex and carry lots of trouble that CodeCity has already fixed (probably). 
+But as said before, Klotz' objective is not to create a city metaphor model, but to have a flexible visualization engine system.
+%meant to easily display many different aspects of a code analysis on the 
+%same framework and with a scripting language, designed to be easy to manage.
 
 
 %:%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \seclabel{conclusion}
-\rj{i just added some extra content here}
+
 Klotz is an agile three-dimensional visualization engine. Klotz visualizes a graph of objects, without any preparation of the objects.
-Klotz meta-model system allows to change a graph definition easily, making it simple and fast to adjust a desired visualization. Been based on any object as the items represented on the node it gives great dynamism to the kind of visualization that it can provide. 
+Klotz modeling system allows one to change a graph definition easily, making it simple and fast to adjust a desired visualization. Been based on any object as the items represented on the node it gives great dynamism to the kind of visualization that it can provide. 
 As future work, we plan to:
 \begin{itemize}
 \item Implement drag-and-drop support to manage the nodes easily.
 \item Add an interface to see the information within the node on mouse focus, and change it dynamically.
-\item Optimize and improve the graphical libraries, if possible, change to a stable, OpenGL based library, because most of them are not even functional right now. 
+\item Optimize and improve the graphical libraries, if possible, change to a stable, OpenGL based library.
 \item Add lots of new Layouts, and with time, other figures to use as nodes. 
 \end{itemize}
 
