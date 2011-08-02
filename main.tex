@@ -210,8 +210,7 @@ Pleiad Lab, Department of Computer Science (DCC),\\ University of Chile, Santiag
 %\end{center}
 
 \begin{abstract}
-\rj{the sentences "a set of plain objects and connections" and "no preparation of the model" seems not understandable}
-Klotz is an agile 3D visualization engine. Visualizations are produced from an arbitrary model, typically a set of plain objects and connections. No preparation of the model is required to be rendered.
+Klotz is an agile 3D visualization engine. Visualizations are produced from an arbitrary model described in terms of objects and interconnections. Any arbitrary model may be visualized.
 Klotz uses a semi-descriptive scripting language to easily and interactively build visualizations. 
 
 Klotz, on its current version, offers four layouts to easily exploit the third dimension when visualizing data. %The block layout organizes data as a city metaphor and the scatterplot layout organizes data along 3 axes.
@@ -247,7 +246,7 @@ Numerous frameworks have been offered by the Smalltalk community to visualize da
 
 We are building on the experience we gained with Mondrian by proposing a new visualization engine that adds a third dimension to the graphical representation. Klotz applies the main features of Mondrian, namely the scripting language and the interactive easel, to a new rendering engine.
 
-\rj{according to lukas we are not using "Morph facilities" but is just using the graphic canvas to draw (like Mondrian). I believe that with some explanation on the graphic engine this would be fine. Also we should remark if we only see those 2 benefits and list them, or mention others like the stability of been based on Pharo facilities or the security also provided by staying on the Pharo enviroment (i think these 2 are quite easy to see just by mentioning the installation and multi-plataform support but its a comment repeated over the review)}
+%\rj{according to lukas we are not using "Morph facilities" but is just using the graphic canvas to draw (like Mondrian). I believe that with some explanation on the graphic engine this would be fine. Also we should remark if we only see those 2 benefits and list them, or mention others like the stability of been based on Pharo facilities or the security also provided by staying on the Pharo enviroment (i think these 2 are quite easy to see just by mentioning the installation and multi-plataform support but its a comment repeated over the review)}
 Contrary to other Smalltalk 3D visualization engines (Lumi\`ere\cite{Oliv09a}, Jun\footnote{\url{http://aokilab.kyoto-su.ac.jp/jun/index.html}}), Klotz does not rely on OpenGL or any external libraries. The generation of 3D graphics is solely based on Morph facilities. The benefits are numerous, including ease of installation and multi-platform support.
 
 
@@ -636,6 +635,9 @@ view applyLayout:
 \section{Implementation} \seclabel{implementation}	
 \rj{we need to add some time reference here, either say that this quantities can be handled by Klotz without colapsing or say that it keeps
 working just fine with them}
+\ab{I am not sure this is necessary. We are not arguing that we have a perfect implementation}
+Klotz is freely available from \url{http://squeaksource.com/Klotz.html}
+
 The current version of \emph{Klotz}, yet not optimized, provides
 support up to 1000 \emph{nodes} on screen, as well as, 
 1000 \emph{edges} between these \emph{nodes}.
